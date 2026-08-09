@@ -12,6 +12,43 @@
     a:hover { color: oklch(0.42 0.13 55); }
     ::selection { background: oklch(0.5 0.13 55 / 0.2); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px !important; }
+    nav > div:last-child { gap: 14px !important; flex-wrap: wrap; }
+
+    #hero {
+      grid-template-columns: 1fr !important;
+      padding: 36px 20px 48px !important;
+      min-height: auto !important;
+      gap: 28px !important;
+    }
+    #hero > img { width: 180px !important; height: 180px !important; justify-self: center; }
+    #hero h1 { font-size: 34px !important; }
+    #hero p { font-size: 16px !important; max-width: 100% !important; }
+    #hero > div > div:last-child { flex-direction: column !important; gap: 10px !important; }
+    #hero > div > div:last-child > a { padding: 13px 20px !important; font-size: 15px !important; justify-content: center; }
+
+    #about { padding: 28px 20px !important; }
+    [style*="grid-template-columns: 180px 1fr"] { grid-template-columns: 1fr !important; gap: 6px !important; }
+
+    #projects { padding: 0 20px 56px !important; }
+    #projects h2 { font-size: 26px !important; margin-bottom: 24px !important; }
+    [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
+
+    #experience { padding: 56px 20px !important; }
+    [style*="grid-template-columns: 200px 1fr"] { grid-template-columns: 1fr !important; gap: 4px !important; }
+
+    #resume { padding: 56px 20px !important; max-width: 100% !important; box-sizing: border-box; }
+    #resume h2 { font-size: 26px !important; }
+    [style*="width: 841px"] { width: 100% !important; height: 320px !important; box-sizing: border-box; }
+    #resumeBox { width: 100% !important; }
+
+    #contact { padding: 60px 20px !important; }
+    #contact h2 { font-size: 28px !important; }
+
+    footer { padding: 24px 20px !important; }
+  }
   </style>
 </head>
 <body>
