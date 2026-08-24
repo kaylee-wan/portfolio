@@ -3,77 +3,1133 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>People Analytics &amp; Attrition Root-Cause — Kaylee Wan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    body { margin: 0; background: oklch(0.98 0.004 90); font-family: 'Inter', sans-serif; }
-    a { color: oklch(0.5 0.13 55); text-decoration: none; }
-    a:hover { color: oklch(0.42 0.13 55); }
-    ::selection { background: oklch(0.5 0.13 55 / 0.2); }
-  </style>
+<script src="./support.js"></script>
 </head>
 <body>
-<div style="background: oklch(0.98 0.004 90); color: oklch(0.22 0.006 260); min-height: 100vh;">
-  <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 20px 64px; background: oklch(0.98 0.005 240 / 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid oklch(0 0 0 / 0.08);">
-    <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.02em;">Kaylee (Li) Wan</div>
-    <a href="index.html#projects" style="font-size: 14px; font-weight: 600; color: oklch(0.5 0.13 55);">← Back to Projects</a>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #f4f5f6; font-family: 'DM Sans', system-ui, sans-serif; }
+    a { color: #6366f1; text-decoration: none; }
+    a:hover { color: hsl(270 70% 38%); }
+    ::selection { background: hsl(239 84% 67% / 0.2); }
+    @keyframes pageIn { from { opacity: 0; transform: scale(1.012); } to { opacity: 1; transform: scale(1); } }
+    body { animation: pageIn .42s cubic-bezier(.2,.7,.3,1) both; }
+  
+    @media (max-width: 900px) {
+      .cols { grid-template-columns: minmax(0, 1fr) !important; }
+      nav.toc { display: none !important; }
+      .pair { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding-left: 22px !important; padding-right: 22px !important; }
+      [style*="padding:64px 0 8px"] { padding-top: 40px !important; }
+      h1 { font-size: clamp(28px, 8.5vw, 42px) !important; }
+    }
+  
+    @media (max-width: 900px) {
+      .wrap { max-width: 100% !important; }
+      .scroll { width: 100% !important; max-width: 100% !important; }
+      pre { max-width: 100% !important; }
+      figure { max-width: 100% !important; }
+    }
+  </style>
+  <script>
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href^="index.html"], a[href^="project-"]');
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      var veil = document.createElement('div');
+      veil.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#f4f5f6;pointer-events:none;opacity:0;transition:opacity .32s ease;';
+      document.body.appendChild(veil);
+      document.body.style.transition = 'transform .38s cubic-bezier(.65,0,.35,1)';
+      requestAnimationFrame(function () { veil.style.opacity = '1'; document.body.style.transform = 'scale(.985)'; });
+      setTimeout(function () { window.location.href = a.getAttribute('href'); }, 330);
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="assets/amazon/deck-render.js"></script>
+</helmet>
+
+<div style="background: #f4f5f6; color: #44444b; min-height: 100vh; font-family: 'DM Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.72;">
+  <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; background: hsl(220 6% 96% / 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid #d6d6db;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.02em; color: #0a0a0b;">Kaylee (Li) Wan</div>
+    <a href="index.html#projects" style="font-size: 14px; font-weight: 600; color: #6366f1;">← Back to Projects</a>
   </nav>
 
-  <header style="padding: 72px 64px 40px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Operations Analytics · Amazon Fulfillment Center (via Extern)</div>
-    <h1 style="font-family: 'Manrope', sans-serif; font-size: 48px; font-weight: 800; line-height: 1.1; margin: 0 0 20px; letter-spacing: -0.01em;">People Analytics &amp; Attrition Root-Cause</h1>
-    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-      <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Sentiment Analysis</span>
-      <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">People Operations</span>
-      <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">HR Strategy</span>
-      <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Python Scraping</span>
-      <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Root Cause Analysis</span>
-    </div>
+
+<div class="wrap" style="max-width:1080px;margin:0 auto;padding:0 40px">
+
+  <header class="hero" style="padding:64px 0 8px">
+    
+    
+    <p class="eyebrow" style="max-width:68ch;font-family:'Space Grotesk', system-ui, sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6366f1;margin:0 0 1.6em">Amazon fulfillment centers · Operational strategy &amp; people analytics</p>
+    <h1 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.12;letter-spacing:-0.02em;font-size:clamp(2.1rem,5.5vw,3.4rem);font-weight:800;margin:0 0 .5em">Worn Out,<br>Not Burned Out</h1>
+    <p class="standfirst" style="max-width:68ch;font-size:clamp(1.05rem,2vw,1.28rem);color:#44444b;max-width:60ch;margin:0 0 1.1em;line-height:1.6">Amazon loses roughly <strong style="color:#0a0a0b;font-weight:650">150% of its hourly fulfillment-center
+    workforce a year</strong>. What
+    <strong style="color:#0a0a0b;font-weight:650">139 Glassdoor reviews and 8 first-person video accounts</strong> say those associates are
+    struggling with — <strong style="color:#0a0a0b;font-weight:650">and it isn’t pay</strong>. Checked against an independent Reddit
+    corpus, including where that check pushed back.</p>
+    <p class="sourcenote" style="max-width:68ch;font-size:.85rem;color:#71717a;max-width:58ch;margin:0 0 2.2em;padding-left:14px;border-left:2px solid #d6d6db">The 150% figure is supplied briefing context, not a finding —
+    <strong style="color:#0a0a0b;font-weight:650">nothing in this corpus measures turnover</strong>
+    (<a class="jump" href="#act4" style="color:#6366f1;text-decoration:none;white-space:nowrap;font-weight:600">↓ caveats &amp; bias disclosures</a>).</p>
+    <ul class="meta" style="max-width:68ch;display:flex;flex-wrap:wrap;gap:10px 26px;padding:18px 0;margin:0;border-top:1px solid #d6d6db;border-bottom:1px solid #d6d6db;list-style:none;font-size:.85rem;color:#71717a;max-width:none">
+      <li><b style="display:block;color:#0a0a0b;font-size:.95rem;font-weight:700">Role</b> People Analytics &amp; Operations Strategy Extern, Amazon Fulfillment Center</li>
+      <li><b style="display:block;color:#0a0a0b;font-size:.95rem;font-weight:700">Sources</b> Glassdoor · YouTube · r/AmazonFC</li>
+      <li><b style="display:block;color:#0a0a0b;font-size:.95rem;font-weight:700">Tools</b> Python · pandas · NLTK · TextBlob · Claude AI</li>
+      <li><b style="display:block;color:#0a0a0b;font-size:.95rem;font-weight:700">Output</b> A two-week, zone-level pilot</li>
+    </ul>
   </header>
 
-  <section style="padding: 0 64px 56px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Summary</div>
-    <p style="font-size: 20px; line-height: 1.7; color: oklch(0.32 0.006 260); margin: 0;">Placeholder summary — replace with the 1–2 sentence result for the Amazon attrition analysis project.</p>
-  </section>
+  <div class="cols" style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:0 56px;align-items:start">
 
-  <section style="padding: 0 64px 56px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Links &amp; Evidence</div>
-    <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
-      <a href="#" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: 1px solid oklch(0 0 0 / 0.15); color: oklch(0.22 0.006 260); font-weight: 600; font-size: 14px; border-radius: 6px;">🔗 Live Dashboard / Repo</a>
-      <a href="#" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: 1px solid oklch(0 0 0 / 0.15); color: oklch(0.22 0.006 260); font-weight: 600; font-size: 14px; border-radius: 6px;">📄 Full Write-Up (PDF)</a>
-    </div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-      <div style="width: 100%; height: 260px; border: 1px dashed oklch(0 0 0 / 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: oklch(0.55 0.006 260); font-size: 13px; text-align: center; padding: 16px;">Chart / dashboard screenshot<br><small>(replace this placeholder — file id az-graph-1)</small></div>
-      <div style="width: 100%; height: 260px; border: 1px dashed oklch(0 0 0 / 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: oklch(0.55 0.006 260); font-size: 13px; text-align: center; padding: 16px;">Before/after or ERD diagram<br><small>(replace this placeholder)</small></div>
-    </div>
-  </section>
+    <nav class="toc" aria-label="Sections" style="position:sticky;top:84px;padding-top:8px">
+      <ol style="max-width:68ch;list-style:none;margin:0;padding:0;font-size:.82rem;line-height:1.5;max-width:none">
+        <li style="margin:0 0 .95em"><a href="#context" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Start</span>Background &amp; the problem</a></li>
+        <li style="margin:0 0 .95em"><a href="#summary" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Answer</span>Executive summary</a></li>
+        <li style="margin:0 0 .95em"><a href="#data" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Setup</span>The data</a></li>
+        <li style="margin:0 0 .95em"><a href="#act1" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Act I</span>“I just couldn’t do it anymore”</a></li>
+        <li style="margin:0 0 .95em"><a href="#act2" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Act II</span>It isn’t pay — and my first attempt to prove it failed</a></li>
+        <li style="margin:0 0 .95em"><a href="#act3" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Act III</span>What the clock counts</a></li>
+        <li style="margin:0 0 .95em"><a href="#act4" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Act IV</span>What one zone can change — and what the data cannot support</a></li>
+        <li style="margin:0 0 .95em"><a href="#behind" style="color:#6366f1;text-decoration:none;color:#71717a;text-decoration:none;display:block;border-left:2px solid #d6d6db;padding-left:12px"><span class="n" style="display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65">Deck</span>The recommendation, for a leadership audience</a></li>
+      </ol>
+    </nav>
 
-  <section style="padding: 0 64px 56px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">How I Built It</div>
-    <ul style="margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.7; color: oklch(0.32 0.006 260); display: flex; flex-direction: column; gap: 10px;">
-      <li>Placeholder step 1.</li>
-      <li>Placeholder step 2.</li>
-      <li>Placeholder step 3.</li>
-    </ul>
-  </section>
+    <main>
 
-  <section style="padding: 0 64px 56px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Challenges</div>
-    <p style="font-size: 16px; line-height: 1.7; color: oklch(0.32 0.006 260); margin: 0;">Placeholder — describe the hardest technical or stakeholder problem and how it was resolved.</p>
-  </section>
+    
+    <section id="context" style="padding:56px 0;border-top:1px solid #d6d6db;border-top:0">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">Background &amp; the problem</h2>
 
-  <section style="padding: 0 64px 100px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">What I Learned + Next Step</div>
-    <p style="font-size: 16px; line-height: 1.7; color: oklch(0.32 0.006 260); margin: 0 0 16px;">Placeholder — reflection and next step.</p>
-    <div style="display: flex; gap: 16px; padding-top: 24px; border-top: 1px solid oklch(0 0 0 / 0.08);">
-      <a href="project-wayfair.html" style="font-size: 14px; font-weight: 600;">← AI Agents for Market Intelligence</a>
-      <span style="color: oklch(0.7 0.006 260);">·</span>
-      <a href="project-breaking-games.html" style="font-size: 14px; font-weight: 600;">SQL & Database Architecture →</a>
-    </div>
-  </section>
+      <p class="lede" style="max-width:68ch;font-size:1.06rem;color:#44444b">An end-to-end engagement as an <strong style="color:#0a0a0b;font-weight:650">external people-analytics
+      consultant to Amazon</strong>: find out why frontline associates leave fulfillment centers, using
+      <strong style="color:#0a0a0b;font-weight:650">employee voice data rather than company data</strong>, and turn it into something a site
+      leader could actually run.</p>
 
-  <footer style="padding: 32px 64px; text-align: center; font-size: 13px; color: oklch(0.55 0.006 260); border-top: 1px solid oklch(0 0 0 / 0.08);">© 2026 Kaylee Wan</footer>
+      <details style="margin:26px 0;border:1px solid #d6d6db;border-radius:10px;background:#ffffff;padding:0 20px 14px">
+        <summary style="cursor:pointer;padding:15px 0;font-weight:650;color:#0a0a0b;font-size:.94rem;list-style:none"><span style="color:#6366f1;font-weight:700;margin-right:8px">+</span>The six workstreams, and what each produced</summary>
+        <div class="scroll" style="overflow-x:auto;margin:26px 0">
+          <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+            <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Workstream</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What it asked for</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What I produced</th></tr></thead>
+            <tbody>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Welcome to the Floor</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Understand FC operations, the cost of turnover, and how a consultant frames a problem</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Workforce structure map; briefing note on turnover cost</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Collect &amp; clean employee voice data</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Learn Python; clean Glassdoor reviews; collect and clean YouTube data</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Two cleaning pipelines; cleaned Glassdoor and YouTube text fields</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Sentiment &amp; keyword patterns</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Structure text; visualise keyword frequency; organise sentiment; compare platforms</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Unigram / bigram / trigram charts for both platforms; TextBlob scoring; cross-platform comparison</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Themes &amp; root causes</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Identify three themes; find the root cause of one priority theme</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Theme taxonomy; sentiment-by-theme chart; root cause tree</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Segment the workforce</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Group into cohorts; compare; map friction in the priority segment</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Six-segment scheme; priority scoring; friction map</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">Pilot-ready intervention</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Frame the problem; design a pilot; package for stakeholders</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Problem statement; intervention framing; pitch deck</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">A base dataset and the workstream structure were supplied. Every decision
+        below about source selection, method and verification was mine.</p>
+      </details>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">What a fulfillment center is, and why its size is part of the problem</h3>
+      <p style="max-width:68ch">An Amazon fulfillment center is the building your order is picked, packed and shipped from.
+      A typical one covers <strong style="color:#0a0a0b;font-weight:650">about 800,000 square feet — roughly fourteen American football
+      fields</strong>, and runs up to 1,500 associates per building across 175+ US sites. That size matters
+      later, because <strong style="color:#0a0a0b;font-weight:650">walking distance turns out to be measurable.</strong></p>
+
+      <p style="max-width:68ch">Every frontline role — stower, picker, packer — works through a <strong style="color:#0a0a0b;font-weight:650">handheld
+      scanner</strong>. It logs the items, tracks the rate, and measures the shift. It also marks when
+      a break starts and ends. So when Act III says break time is timed <em>“scan to scan”</em>,
+      that is literal: <strong style="color:#0a0a0b;font-weight:650">the tool that measures the work is the tool that measures the
+      rest.</strong></p>
+
+      <details style="margin:26px 0;border:1px solid #d6d6db;border-radius:10px;background:#ffffff;padding:0 20px 14px">
+        <summary style="cursor:pointer;padding:15px 0;font-weight:650;color:#0a0a0b;font-size:.94rem;list-style:none"><span style="color:#6366f1;font-weight:700;margin-right:8px">+</span>The frontline roles, and the floor vocabulary this page uses</summary>
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Frontline role</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What they do</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What the job costs physically</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Stower</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Places incoming products into storage locations using a handheld scanner</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Frequent lifting and bending</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Picker</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Retrieves products for customer orders, scanning each one</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Extensive walking</b>, all shift</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Packer</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Boxes, protects and labels orders for dispatch</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Standing at a station against productivity targets</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Learning&nbsp;Ambassador</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Trains new associates and reinforces safe, standard practice</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">—</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Process Assistant</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Runs small teams, monitors performance against targets</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">—</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">Area Manager</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Runs a whole zone for productivity, safety and quality</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">From the workforce structure map I built in the first workstream. The Learning
+      Ambassador is the role this analysis ends up pointing at. It is the channel through which floor
+      knowledge reaches new hires, so it is also what breaks first when people leave.</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>These are roles, not the segments used later.</b> This table is the org chart. The analysis groups reviewers a different way, because
+      <b>the data does not support grouping them by role</b>: only <b>22 of 139 reviewers</b> name a
+      specific frontline task — stow, pick, pack or sort — in their job title. <b>40 just write
+      “Associate” or “Warehouse Associate”</b>, another 32 a generic variant of
+      it, and 5 leave it blank. Stowers, pickers and packers are all
+      in the corpus. They are simply not separable in it, which is why
+      <a class="jump" href="#act3" style="color:#6366f1;text-decoration:none;white-space:nowrap;font-weight:600">↓ Act III</a> segments by frontline status and employment type
+      instead.</p>
+
+        <div class="sub" style="margin-top:18px;padding-top:16px;border-top:1px solid #d6d6db">
+        <p style="max-width:68ch"><b>Floor vocabulary used on this page</b></p>
+        <div class="scroll" style="overflow-x:auto;margin:26px 0">
+          <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+            <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Term</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What it means on the floor</th></tr></thead>
+            <tbody>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Rate</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">The productivity target for a role — units per hour. Missing it is documented.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Points</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Attendance demerits. Accumulate enough and employment ends.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Write-up</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">A documented disciplinary record, including for returning late from a break.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Scan to scan</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Break length measured from the scan that starts it to the scan that ends it — walking included.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">UPT</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Unpaid Personal Time — a balance drawn down when you are late or absent.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">VTO</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Voluntary Time Off — unpaid hours offered when demand is low.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">AmCare</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">The on-site first-aid function associates go to when injured.</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">Stow / pick / pack</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">The three core frontline tasks: shelve it, retrieve it, box it.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">These terms matter twice over: they are how associates describe their own
+        working conditions, and — as Act II shows — <strong style="color:#0a0a0b;font-weight:650">a general-purpose sentiment lexicon scores
+        every one of them at exactly 0.000.</strong></p>
+      </div>
+      </details>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">What the business is losing</h3>
+      <p style="max-width:68ch">Turnover among hourly associates runs at roughly <strong style="color:#0a0a0b;font-weight:650">150% a year</strong>, with many new
+      hires leaving inside their first 90 days. The cost compounds through the operation rather than
+      landing once: FC knowledge is <strong style="color:#0a0a0b;font-weight:650">tribal</strong>. It lives in Learning Ambassadors and
+      experienced associates rather than in documentation, so every departure removes knowledge from
+      the floor and every replacement re-learns it slightly differently. Slower processing, higher error
+      rates, rehiring costs that recur. Burnout is the leading edge of it: burned-out employees are
+      <strong style="color:#0a0a0b;font-weight:650">74% more likely to be actively job hunting</strong> (Gallup).</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">Every figure here is supplied briefing context, not measured in this analysis. Nothing in the corpus can produce a turnover rate. No cost-per-hire figure is asserted anywhere:
+      published estimates for hourly warehouse replacement vary too widely, and none was available for
+      Amazon specifically. Business impact is argued through mechanism, not a dollar figure.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Why employee voice, and not the company’s own data</h3>
+      <p style="max-width:68ch">Exit interviews and engagement surveys capture what leadership already thinks to ask about.
+      They do not capture what associates say when nobody from Amazon is in the room. Companies that
+      solve this push people data toward the floor. The briefing material cites Uber and Netflix giving
+      managers real-time visibility into engagement data rather than routing every decision through HR.
+      Amazon’s equivalent frontline role is the Learning Ambassador. <strong style="color:#0a0a0b;font-weight:650">This analysis asks
+      what signal that role should be given.</strong></p>
+
+      <details style="margin:26px 0;border:1px solid #d6d6db;border-radius:10px;background:#ffffff;padding:0 20px 14px">
+        <summary style="cursor:pointer;padding:15px 0;font-weight:650;color:#0a0a0b;font-size:.94rem;list-style:none"><span style="color:#6366f1;font-weight:700;margin-right:8px">+</span>The three questions this had to answer, by stakeholder</summary>
+        <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Stakeholder</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Question</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Site Operations</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Which workforce segment carries the highest
+              concentration of attrition risk, and why?</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">People / HR</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">What are associates actually complaining about, and
+              what is the root cause beneath the complaint?</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">Site Leadership</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">What low-cost intervention can be piloted in two
+              weeks with a measurable early signal?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      </details>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">What the deliverable had to satisfy</h3>
+      <p style="max-width:68ch">The brief did not ask for the biggest possible intervention. It asked for one that
+      <strong style="color:#0a0a0b;font-weight:650">a site could actually run</strong>, against four stated criteria:</p>
+      <ul class="crit" style="max-width:68ch;margin:0 0 1.4em;padding-left:22px">
+        <li style="margin-bottom:.35em"><b>Low-cost</b> — no capital spend</li>
+        <li style="margin-bottom:.35em"><b>High-impact</b> — addresses a named mechanism, not a mood</li>
+        <li style="margin-bottom:.35em"><b>Team-led</b> — owned at zone level, no corporate approval</li>
+        <li style="margin-bottom:.35em"><b>Measurable</b> — a signal visible inside a short pilot</li>
+      </ul>
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">This constraint shapes the ending, so it is stated up front.</strong> The analysis was
+      free to find whatever it found. The <em>recommendation</em> had to fit through that gate. Act IV
+      shows what did not fit.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">The hypothesis was in the briefing before the data was</h3>
+      <p style="max-width:68ch">My own first briefing note, written before any analysis, already named the mechanism:
+      <em>“burnout — fuelled by repetitive, physically demanding tasks and a lack of recovery
+      time — is a primary driver.”</em></p>
+
+      <p style="max-width:68ch">That makes the analysis a test, not a discovery, and it raises the obvious risk: I could have
+      gone looking for what I had already written down. So the work below is structured to be able to
+      fail. The theme ranking is re-run on three independent text bases, my own manually collected
+      reviews are held out and the finding checked without them, and the claim is taken to a third
+      source I do not control. <strong style="color:#0a0a0b;font-weight:650">What the analysis established is not <em>that</em> the theme
+      exists, but whether it holds at scale, in which segment, and through what mechanism.</strong></p>
+
+    </section>
+
+    
+    <section id="summary" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">Executive summary</h2>
+      <div class="summary" style="background:#ffffff;border:1px solid #d6d6db;border-radius:14px;padding:clamp(24px,3.5vw,38px);margin:8px 0 0">
+        <ul style="max-width:68ch;margin:0;padding:0;list-style:none;max-width:none">
+          <li style="padding:14px 0;border-top:1px solid #d6d6db;max-width:none;border-top:0;padding-top:0"><strong style="color:#0a0a0b;font-weight:650">It is not pay.</strong> Compensation is the highest-rated of seven dimensions
+            (3.76); work–life balance the lowest (3.09). Among full-time frontline associates the gap
+            is wider — 3.92 against 3.13. Pay is the only thing about this job that is working, and it
+            is not holding people.</li>
+          <li style="padding:14px 0;border-top:1px solid #d6d6db;max-width:none"><strong style="color:#0a0a0b;font-weight:650">Reviewers write about their bodies.</strong>
+            <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">physical/physically</code> appears in 20 of 139 reviews. <strong style="color:#0a0a0b;font-weight:650">“burnout” appears
+            in 0.</strong> The standard HR frame for this problem is a word these workers never use.</li>
+          <li style="padding:14px 0;border-top:1px solid #d6d6db;max-width:none"><strong style="color:#0a0a0b;font-weight:650">It concentrates in one segment.</strong> Full-Time Frontline Associates:
+            83 of 139 reviews (60%), the largest of six segments and the lowest work–life score among
+            frontline roles.</li>
+          <li style="padding:14px 0;border-top:1px solid #d6d6db;max-width:none"><strong style="color:#0a0a0b;font-weight:650">The problem is how break time is counted.</strong> Paid rest is timed
+            <em>scan to scan</em>: walking to a distant break area, walking back and scanning in all come
+            out of the same interval, and rest is whatever is left.</li>
+          <li style="padding:14px 0;border-top:1px solid #d6d6db;max-width:none;padding-bottom:0"><strong style="color:#0a0a0b;font-weight:650">My sentiment tool could not see any of it.</strong> TextBlob returned
+            <strong style="color:#0a0a0b;font-weight:650">0 negative labels</strong> across eight transcripts, including one whose author
+            says <em>“I quit Amazon in one day.”</em> A word count predicted star ratings eight times
+            better. The method changed accordingly.</li>
+        </ul>
+        <p class="pilot" style="max-width:68ch;margin:26px 0 0;padding:20px 24px;border-radius:12px;background:#eef0fe;border:1px solid #6366f1;color:#44444b;max-width:none"><b style="color:#6366f1">Recommended pilot (P0).</b> A satellite rest point in the zone farthest
+        from the main break room, paired with a posted break-entitlement card at each workstation.
+        Owner: zone shift lead. Two weeks, one zone, no facility spend, two measurable signals, and a
+        stated condition that would falsify it. <b style="color:#6366f1">Deliberately not a scheduling change:</b> the brief
+        required something a site could run without corporate approval, and
+        <a class="jump" href="#act4" style="color:#6366f1;text-decoration:none;white-space:nowrap;font-weight:600">↓ Act IV</a> shows which scheduling fixes that rules out.</p>
+      </div>
+    </section>
+
+    
+    <section id="data" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">The data</h2>
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Source</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Volume</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Window</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Role in the analysis</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Glassdoor</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">139 reviews</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Jun 2024 – Jun 2026</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">The corpus. Every quantitative claim comes from here — it carries dates, seven rating
+              dimensions, job titles and tenure, so it supports segmentation.</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">YouTube</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">8 transcripts</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">May 2025 – May 2026</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Mechanism and depth. Long-form first-person accounts that explain <em>how</em> the
+              problem happens.</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">r/AmazonFC</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">963 posts</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Jan – Jul 2026</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">A check, not a source</b> — somewhere I do not control, used to test whether the
+              mechanism survived contact with a third party.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">The three are never summed.</strong> They are not commensurable: 139 short structured
+      reviews, 8 long transcripts, and 963 anonymous posts measure different things at different
+      lengths. The headline is <em>139 reviews and 8 video accounts</em>; Reddit is cited as
+      verification.</p>
+
+      <details style="margin:26px 0;border:1px solid #d6d6db;border-radius:10px;background:#ffffff;padding:0 20px 14px">
+        <summary style="cursor:pointer;padding:15px 0;font-weight:650;color:#0a0a0b;font-size:.94rem;list-style:none"><span style="color:#6366f1;font-weight:700;margin-right:8px">+</span>Provenance and collection frames</summary>
+        <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">Glassdoor.</strong> 125 reviews were supplied (Nov 2024 – Jun 2025). That window was
+        already stale, so I collected <strong style="color:#0a0a0b;font-weight:650">15 more manually</strong>, extending coverage to Jun 2026
+        — one of the 15 dates from Jun 2024, before the supplied window, which is why the table above
+        starts there. Review IDs run 1–140; ID 104 was dropped in cleaning, so n = 139.</p>
+        <p style="max-width:68ch">The two blocks stay separable: scraper-only fields (<code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">count_helpful</code>,
+        <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">flag_covid</code>) are populated for IDs 1–125 and blank for 126–140. Provenance is
+        recoverable per row, and the manual additions can be <strong style="color:#0a0a0b;font-weight:650">held out for a bias test</strong>, which they were. My 15 reviews targeted frontline roles, the same segment the analysis goes
+        on to prioritise, so the result risks being circular. <strong style="color:#0a0a0b;font-weight:650">Dropped, the finding gets
+        stronger, not weaker:</strong> on the supplied block alone (124 rows after #104 was dropped), full-time frontline work–life
+        falls to <strong style="color:#0a0a0b;font-weight:650">3.00</strong> against part-time’s 3.71, a wider gap than the 3.13 the full
+        corpus gives. The added reviews also rate work–life 3.20 against the supplied block’s
+        3.07, so they tilted the corpus slightly <em>positive</em>. The conclusion does not depend on
+        them.</p>
+        <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">YouTube.</strong> Eight videos selected against a frame written before collecting:
+        recency matched to the Glassdoor window. First-person accounts only, no commentary or news;
+        <strong style="color:#0a0a0b;font-weight:650">role spread rather than reach</strong>. View counts range 51 to 6,375. The
+        51-view video was kept and the 6,375-view one was not privileged; the area manager account,
+        which carries the most useful detail on enforcement, has 1,300.</p>
+        <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">r/AmazonFC.</strong> Collected in two deliberately separate modes, recorded in a
+        <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">query</code> field: <strong style="color:#0a0a0b;font-weight:650">479 unfiltered</strong> posts from the subreddit’s new
+        feed with no search term, the only block with a valid denominator, and <strong style="color:#0a0a0b;font-weight:650">484
+        targeted</strong> posts retrieved by keyword, usable for mechanism but never for prevalence.</p>
+      </details>
+    </section>
+
+    
+    <section id="act1" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">Act I — “I just couldn’t do it anymore”</h2>
+
+      <blockquote style="margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid #6366f1;font-size:clamp(1.05rem,2.1vw,1.3rem);line-height:1.6;color:#0a0a0b;max-width:68ch">
+        “My feet felt like Legos. I couldn’t feel my feet. No, like, I really could not feel my
+        feet. It felt like someone had shot my foot.”
+        <cite style="display:block;margin-top:.8em;font-size:.85rem;font-style:normal;color:#71717a;font-weight:600">Amazon associate, hour seven of a ten-hour shift</cite>
+      </blockquote>
+
+      <p style="max-width:68ch">He corrects himself mid-sentence. He is guarding against being read as exaggerating.</p>
+
+      <p class="lede" style="max-width:68ch;font-size:1.06rem;color:#44444b">At roughly <strong style="color:#0a0a0b;font-weight:650">150% turnover a year</strong>, the exits are not competitive
+      losses to better offers. A former associate, quoted in a National Employment Law Project report,
+      describes his own:</p>
+
+      <blockquote class="plain" style="margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid #6366f1;font-size:clamp(1.05rem,2.1vw,1.3rem);line-height:1.6;color:#0a0a0b;max-width:68ch;border-left-color:#d6d6db;font-size:1.02rem;color:#44444b">
+        “I wasn’t injured. I wasn’t fired. I just couldn’t do it anymore.”
+      </blockquote>
+
+      <p style="max-width:68ch">Three negations. No injury. No firing. <strong style="color:#0a0a0b;font-weight:650">No event.</strong> A departure that left no
+      record anywhere, and a person who cannot name what happened to him, because the thing that
+      happened does not have a category.</p>
+    </section>
+
+    
+    <section id="act2" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">Act II — It isn’t pay, and my first attempt to prove it failed</h2>
+
+      <p class="skipnote" style="max-width:68ch;margin:0 0 22px;padding:11px 15px;border-radius:5px;border:1px dashed #d6d6db;color:#71717a;font-size:.88rem;line-height:1.6;max-width:none"><b>This act is about method.</b> It covers the sentiment tool that failed,
+      why it failed, and what replaced it. If you only need the findings,
+      <a href="#act3" style="color:#6366f1;text-decoration:none">skip to Act III ↓</a>. Nothing here is required to follow the rest.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">The obvious answer is wrong</h3>
+      <p style="max-width:68ch">The default assumption about warehouse attrition is that it is driven by pay. In this corpus
+      it is not. Across the 101 reviews that carry dimension ratings, <strong style="color:#0a0a0b;font-weight:650">Compensation &amp; Benefits is the
+      highest-rated of seven dimensions at 3.76</strong> and <strong style="color:#0a0a0b;font-weight:650">Work–Life Balance the lowest at 3.09</strong>.</p>
+
+      <figure style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/ratings_by_dimension.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/ratings_by_dimension.png" loading="lazy" alt="Bar chart of seven rated dimensions; compensation and benefits scores highest at 3.76, work–life balance lowest at 3.09." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Pay is the only thing that is working.</b> Within Full-Time Frontline
+        Associates the gap is wider — 3.92 against 3.13. The seven dimension ratings are populated for 101 of 139 reviews
+        (<code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">0</code> = missing); the frontline figures rest on 63 of those.</figcaption>
+      </figure>
+
+      <p style="max-width:68ch">The complaint field agrees. Within that segment <strong style="color:#0a0a0b;font-weight:650"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">pay</code> appears 5
+      times</strong>, while the rest-and-load cluster — <em>hours</em>, <em>long</em>, <em>break</em>,
+      <em>physical</em>, <em>physically</em> — appears <strong style="color:#0a0a0b;font-weight:650">46</strong>. Associates are not
+      describing a bad paycheck. They are describing a body running out.</p>
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">Counted within Full-Time Frontline Associates (83 reviews) on the six-segment
+      scheme used throughout this page.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Zero negatives on eight transcripts</h3>
+      <p style="max-width:68ch">To put a number on the strain, I ran TextBlob over the eight cleaned YouTube transcripts. The
+      result was <strong style="color:#0a0a0b;font-weight:650">3 positive, 5 neutral, 0 negative</strong>.</p>
+      <p style="max-width:68ch">Zero. Including <em>No Breaks for 10 Hours at Amazon (I Hit My Limit)</em>, whose author
+      says, in his own words, <strong style="color:#0a0a0b;font-weight:650">“I quit Amazon in one day”</strong>, which scored a polarity of
+      <strong style="color:#0a0a0b;font-weight:650">+0.005</strong> and was labelled neutral.</p>
+
+      <figure class="nb" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+        <a class="zoom" href="assets/amazon/notebook-output/youtube-sentiment.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/notebook-output/youtube-sentiment.png" loading="lazy" alt="Bar chart titled YouTube Sentiment Distribution with only two bars, neutral at 5 and positive at 3. There is no negative bar." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">The model recorded zero negativity in a corpus of people describing why they
+        quit.</b> Unedited from the analysis: <em>negative</em> is not a short bar. It is
+        <b style="color:#0a0a0b">not on the axis at all</b>, because there was nothing to plot.</figcaption>
+      </figure>
+
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What the speaker said</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What the model returned</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">“My feet felt like Legos… it felt like someone had shot my foot.”</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">+0.005</b></td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">“At hour seven, bro, I almost contemplated life.”</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Label: <b style="color:#0a0a0b">neutral</b></td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">“Amazon, I hate y’all.”</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"></td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Three uses of “slavery” and all three uses of “breaking point” in the whole corpus</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="nb" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+        <a class="zoom" href="assets/amazon/notebook-output/sentiment-stacked.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/notebook-output/sentiment-stacked.png" loading="lazy" alt="100% stacked bar comparing sentiment labels: Glassdoor 46.0% positive, 44.6% neutral, 9.4% negative; YouTube 37.5% positive, 62.5% neutral, 0% negative." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">The red segment has zero width on one side of this chart.</b> Both platforms
+        scored the same way. Glassdoor returns
+        <b style="color:#0a0a0b">9.4% negative</b>; YouTube returns <b style="color:#0a0a0b">0%</b> — from eight long first-person accounts of why
+        people leave. That gap says more about the tool than about the two platforms.</figcaption>
+      </figure>
+
+      <p style="max-width:68ch">I did not treat this as a tuning problem. <strong style="color:#0a0a0b;font-weight:650">Why it failed is explainable, and that
+      matters more than that it failed.</strong> TextBlob’s default analyzer scores text against
+      a fixed word list. This speaker’s distress is carried by slang, repetition, direct address
+      (<em>“I hate y’all”</em>) and narrative escalation, none of which is in the list. Not a
+      black box misbehaving: a known tool used outside the register it was built for, and the corpus
+      is full of that register.</p>
+
+      <p style="max-width:68ch">The passage that opens this piece and the passage that broke my method are the same passage.
+      He appears twice: once as a voice, once as evidence that the instrument could not hear him.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">I tried to fix it before abandoning it, and the fix taught me more than it fixed</h3>
+      <p style="max-width:68ch">Demoting a tool is only defensible if you first tried to make it work. Two faults were
+      diagnosed rather than guessed at:</p>
+
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Fault</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Evidence</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">The lexicon negates only <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">not</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">no</code> and <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">never</code></td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">not good</code> → −0.35, but <b style="color:#0a0a0b"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">wasn't good</code> → +0.70</b>. A real
+                2★ review reading “people charge wasnt good” scores <b style="color:#0a0a0b">+0.70</b>, the model’s
+                near-maximum positive. <b style="color:#0a0a0b">9% of complaint fields contain a negator it cannot handle.</b></td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Warehouse and workplace vocabulary is invisible to it</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">These score <b style="color:#0a0a0b">exactly 0.000</b>: <em>toxic, favoritism, draining, burnout, unsafe,
+                overworked, understaffed, micromanaged, grueling, overtime</em> — and every
+                Amazon-specific term: <em>VTO, UPT, AmCare, megacycle, rate, points, write-up, stow,
+                scan</em>. <b style="color:#0a0a0b">12% of complaint fields contain at least one term the lexicon cannot see; 19% are
+                hit by one fault or the other.</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="max-width:68ch">Then I built a <strong style="color:#0a0a0b;font-weight:650">domain-tuned lexicon</strong>, with hand-assigned polarities for those
+      terms, plus negation extended to contractions. It fixes the individual reviews and leaves the
+      correlation essentially unchanged: <strong style="color:#0a0a0b;font-weight:650">+0.042 against +0.045.</strong></p>
+
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">That result told me my test was wrong.</strong> <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">cons</code> is
+      the complaint box: <em>every</em> reviewer writes something negative there, five-star reviewers
+      included, so cons-field sentiment should never have been expected to track the overall rating.
+      My validation design was wrong, and finding that out was worth more than the fix would have been.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">A word count beat the sentiment model</h3>
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Construct</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Correlation with star rating</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">cons polarity</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">+0.045</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">cons polarity, domain-tuned lexicon</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">+0.042</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">pros polarity</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">+0.114</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">pros + cons net sentiment</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">+0.124</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">cons words − pros words</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">−0.397</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">n = 139. Length asymmetry is computed on the cleaned fields. On the raw fields it
+      is −0.381. Either way it is roughly eight times the sentiment score’s correlation.</p>
+
+      <figure class="nb" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+        <a class="zoom" href="assets/amazon/notebook-output/polarity-error-bars.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/notebook-output/polarity-error-bars.png" loading="lazy" alt="Average sentiment polarity by platform with standard-deviation error bars: Glassdoor 0.225, YouTube 0.081, with error bars spanning roughly minus 0.2 to plus 0.65." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">The spread swamps the difference the chart is meant to show.</b> Mean polarity by
+        platform: error bars run <b style="color:#0a0a0b">−0.2 to +0.65</b>,
+        several times the gap between the two platforms. Plotting the spread rather than only the means
+        is what made the weakness visible before the correlation test confirmed it.</figcaption>
+      </figure>
+
+      <p style="max-width:68ch">Every sentiment variant, tuned or untuned, loses to a structural feature that needs no
+      lexicon at all. There is a second reason not to trust the scores, visible before any of this:
+      <strong style="color:#0a0a0b;font-weight:650">which field you score changes the conclusion.</strong></p>
+
+      <p style="max-width:68ch">The brief was specific about this, and the two tasks differ. For the keyword charts it says
+      <em>“choose one cleaned column to analyze”</em>, an open choice, and I chose the
+      complaint field with the reason written into the notebook. For sentiment it names the column:
+      <em>“confirm your cleaned text column is named <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">cleaned_summary</code>”</em>.
+      <strong style="color:#0a0a0b;font-weight:650">I followed both.</strong> So what follows is not a correction to my work. It is a test of
+      the specification itself.</p>
+
+      <figure class="nb" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+        <a class="zoom" href="assets/amazon/notebook-output/glassdoor-sentiment-bar.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/notebook-output/glassdoor-sentiment-bar.png" loading="lazy" alt="Bar chart of Glassdoor sentiment on the summary field: positive 64, neutral 62, negative 13." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><span class="tag" style="display:inline-block;margin-bottom:.5em;padding:2px 9px;border-radius:3px;background:#eef0fe;color:#6366f1;font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase">Superseded — shown as evidence</span>
+        <b style="color:#0a0a0b">A clean-looking chart that was measuring almost nothing.</b> My first pass, unedited: on the
+        specified summary field, <b style="color:#0a0a0b">64 positive against 13 negative</b>. Nothing about this chart looks
+        wrong. That is the
+        problem. It is reproduced because the next figure only means something against it.</figcaption>
+      </figure>
+
+      <figure style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/sentiment_basis_rebuild.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/sentiment_basis_rebuild.png" loading="lazy" alt="Sentiment distribution under three text bases, moving the corpus from net-positive to net-negative." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Same 139 reviews, opposite conclusions.</b> The specified field —
+        <b style="color:#0a0a0b">median two words</b> — reads net <b style="color:#0a0a0b">positive</b> (+0.225, 64 vs 13); the complaint field
+        reads net <b style="color:#0a0a0b">negative</b> (−0.042, 20 vs 36). Not a shift — an inversion.</figcaption>
+      </figure>
+
+      <p style="max-width:68ch"><b>The uncomfortable half.</b> Against the star rating as ground truth,
+      <strong style="color:#0a0a0b;font-weight:650">the specified field wins by a wide margin</strong>, +0.346 against +0.045. That is not
+      an argument for it. The summary is the reviewer’s headline, so it agrees with the star
+      rating because the two measure the same thing, and the rating already answers that question
+      without a model. The complaint box, for the reason above, should not track it and does not.
+      <strong style="color:#0a0a0b;font-weight:650">The correlation test cannot arbitrate here: the two fields answer different
+      questions.</strong></p>
+
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">Decision:</strong> the published figures stay as the brief specified. What the
+      comparison establishes is that <strong style="color:#0a0a0b;font-weight:650">a two-word field cannot carry a sentiment conclusion in
+      either direction</strong>, and that neither basis is reliable enough to build on. Sentiment was
+      demoted to a supporting signal. Keyword and phrase frequency became the backbone. Everything in
+      Act III rests on counted words and read source text.</p>
+
+      <details style="margin:26px 0;border:1px solid #d6d6db;border-radius:10px;background:#ffffff;padding:0 20px 14px">
+        <summary style="cursor:pointer;padding:15px 0;font-weight:650;color:#0a0a0b;font-size:.94rem;list-style:none"><span style="color:#6366f1;font-weight:700;margin-right:8px">+</span>Cleaning detail: why the negation step matters</summary>
+        <p style="max-width:68ch">Moving the argument onto word counts raises the stakes on cleaning, because one standard
+        step would have inverted the meaning of the corpus. NLTK’s default English stopword list
+        deletes <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">not</code> and <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">no</code>. Applied to employee-voice text it
+        silently rewrites:</p>
+        <pre style="background:#eef0fe;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:.85rem;max-width:68ch"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b;background:none;padding:0">"not enough break time"  →  "enough break time"</code></pre>
+        <p style="max-width:68ch">I subtracted a negation set from the stoplist before applying it:</p>
+        <pre style="background:#eef0fe;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:.85rem;max-width:68ch"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b;background:none;padding:0">stop_words = stop_words - negations</code></pre>
+        <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">53 of the 137 non-empty complaint fields contain a negation word; in 40 of them it
+        is <em>not</em> or <em>no</em></strong>, the two the default list would have deleted. Without
+        that line, nearly a third of the complaints would have been counted as their own opposite.</p>
+        <p style="max-width:68ch">Two further steps: a <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">len(word) &gt; 2</code> filter to drop numeric fragments, and a
+        <strong style="color:#0a0a0b;font-weight:650">63-term custom stoplist</strong> built by checking each candidate against the source
+        text before removing it, including non-English tokens (<code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">que</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">mucho</code>,
+        <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">trabajo</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">ich</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">und</code>) surviving from multilingual reviews.</p>
+
+        <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">The effect of that stoplist is visible in step 2 of the ladder below —
+        <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">not</code> ranking second at 29 occurrences <em>is</em> the negation-preservation line,
+        visible in the data. A default stoplist would have deleted all 29.</p>
+        <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">A known inconsistency:</strong> the Glassdoor pipeline preserves negations but lacks
+        a punctuation-to-space step. The YouTube pipeline is the reverse. Each is defensible on its own
+        text type, but they are not the same pipeline, so nothing here compares <em>negative
+        language</em> across platforms.</p>
+      </details>
+
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Four passes over the same text, and where counting stops working</h3>
+      <p style="max-width:68ch">Once sentiment was demoted, frequency had to carry the argument, so it was worth establishing
+      how far it could actually be pushed. I ran the same widening window over each corpus four times:
+      raw counts, filtered counts, pairs, triples. <strong style="color:#0a0a0b;font-weight:650">Each pass was forced by a specific failure in
+      the one before it</strong>, and the two sources gave opposite answers at the end.</p>
+
+        <div class="ladder-part" style="margin:30px 0 8px;padding:22px 24px 8px;border:1px solid #d6d6db;border-radius:8px">
+          <h4 class="partname" style="margin:0 0 4px;font-family:'Space Grotesk', system-ui, sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#6366f1">Pass 1–4 · Glassdoor complaint fields</h4>
+          <p class="stepwhy" style="max-width:68ch;margin:0 0 4px;color:#71717a;font-size:.92rem">139 reviews, the <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">cons</code> field. Short, written, filled in against a form, a median of six words.</p>
+          <div class="ladder" style="margin:18px 0 4px">
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;border-top:0;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">1</span>Count the words as they come</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/unigrams-raw.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/unigrams-raw.png" loading="lazy" alt="Top 10 unigrams in the Glassdoor complaint field before filtering: work 45, not 29, get 23, hours 18, long 13." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">No stoplist, no filtering</b> — a plain count over the cleaned complaint field. <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">work</code> 45, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">not</code> 29, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">get</code> 23.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> a baseline, and a diagnosis: the noise here is generic <em>work</em> vocabulary.<br><b>Still could not:</b> answer anything. Three of the top five bars say nothing about the job.</p>
+          </section>
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">2</span>Filter — deciding what counts as noise by reading, not by default</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/unigrams-filtered.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/unigrams-filtered.png" loading="lazy" alt="Top 10 unigrams after filtering, Glassdoor: hours 18, long 13, management 12, physically 11, environment 11, time 11, break 11." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch">NLTK’s list <em>minus</em> the negation set, plus 63 terms checked against the source text one at a time. <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">hours</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">long</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">physically</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">break</code>.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> a legible theme. Load and time are now the top of the chart.<br><b>Still could not:</b> disambiguate. <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">break</code> at 11 could be a rest break or a broken process, and that word carries the whole argument.</p>
+          </section>
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">3</span>Go to pairs, because that one word had to be resolved</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/bigrams-cons.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/bigrams-cons.png" loading="lazy" alt="Top 10 bigrams in the Glassdoor complaint field: physically demanding, break time, long hours, use break." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><em>physically demanding</em> and <em>break time</em> lead; <em>use break</em> adds three more.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> the mechanism, named. <em>break</em> alone was ambiguous; <em>break time</em> and <em>use break</em> are not.<br><b>Still could not:</b> go further without losing the ground under it, which is what the next pass showed.</p>
+          </section>
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db;margin-bottom:8px;padding-bottom:0;border-bottom:0">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">4</span>Go to triples, and hit the floor</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/gd-trigrams.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/gd-trigrams.png" loading="lazy" alt="Top 10 trigrams in the Glassdoor complaint field: use break time 3, mandatory extra time 2, work life balance 2, then a tail at frequency 1." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b"><em>use break time</em> is the single most frequent trigram</b> — at a frequency of <b style="color:#0a0a0b">3</b>, with the tail down at <b style="color:#0a0a0b">1</b>. The last four bars (<em>inhumane draining physically</em>, <em>draining physically amp</em>, <em>physically amp mentally</em>) are one review fragmenting across three rows.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> confirmation of the exact phrase the argument rests on.<br><b>Still could not:</b> be counted. A top frequency of 3 across 139 reviews is not a distribution. <b>This is the floor.</b> Below it I am reading individual reviews one by one.</p>
+          </section>
+          </div>
+          <p class="verdict" style="max-width:68ch;margin:4px 0 16px;padding:12px 15px;border-left:3px solid #6366f1;font-size:.93rem;line-height:1.65;max-width:none"><b>Verdict: Glassdoor stops at pairs.</b> Bigrams are the last window with counts worth reporting, so nothing on this page cites a Glassdoor trigram. That limit came out of this pass. I did not apply a rule of thumb.</p>
+        </div>
+        <div class="ladder-part" style="margin:30px 0 8px;padding:22px 24px 8px;border:1px solid #d6d6db;border-radius:8px">
+          <h4 class="partname" style="margin:0 0 4px;font-family:'Space Grotesk', system-ui, sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#6366f1">Pass 1–4 · YouTube transcripts</h4>
+          <p class="stepwhy" style="max-width:68ch;margin:0 0 4px;color:#71717a;font-size:.92rem">8 transcripts, spoken, unstructured, thousands of words each. The same four passes, run separately with its own pipeline.</p>
+          <div class="ladder" style="margin:18px 0 4px">
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;border-top:0;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">1</span>Same first pass, different noise</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/yt-unigrams-raw.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/yt-unigrams-raw.png" loading="lazy" alt="Top 10 unigrams in the YouTube transcripts before filtering: like 164, im 163, get 145, amazon 130, going 116." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">like</code> 164, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">im</code> 163, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">get</code> 145. Speech filler outranks every content word by a wide margin.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> proof that one stoplist would not serve both sources. Written reviews leak generic work vocabulary. Spoken transcripts leak filler.<br><b>Still could not:</b> anything else. This chart is 100% noise.</p>
+          </section>
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">2</span>Filter, and the register shows up as a number</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/yt-unigrams-filtered.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/yt-unigrams-filtered.png" loading="lazy" alt="Top 10 unigrams after filtering, YouTube: time 77, working 58, need 47, hours 43, feel 39, hour 38, shift 35, keep 34, aint 34, managers 33." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">time</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">working</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">hours</code>, <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">shift</code> — the same core Glassdoor gave. But also <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">feel</code> 39 and <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">aint</code> 34, which the Glassdoor list never produces.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> the register difference as a <em>rankable</em> figure rather than an impression. This is the bar chart the word clouds later in Act III cannot be.<br><b>Still could not:</b> explain <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">keep</code> at 34. On its own the word means nothing.</p>
+          </section>
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">3</span>Pairs get halfway there</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/yt-bigrams.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/yt-bigrams.png" loading="lazy" alt="Top 10 bigrams in the YouTube transcripts: 10 hour 13, keep eye 12, eye points 10, full time 9, hours week 8, blue badge, hour shift." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><em>10 hour</em> 13 and <em>keep eye</em> 12 lead, with <em>eye points</em> 10 right behind — plus <em>blue badge</em>, <em>hour shift</em>, <em>hours week</em>.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> shift length, unambiguously, at the top of the chart.<br><b>Still could not:</b> finish. <em>keep eye</em> and <em>eye points</em> are obviously two halves of one phrase, and at this width you cannot see what it is.</p>
+          </section>
+          <section class="step" style="padding:56px 0;border-top:1px solid #d6d6db;margin:0 0 20px;padding:0 0 20px;border-top:0;border-bottom:1px solid #d6d6db;margin-bottom:8px;padding-bottom:0;border-bottom:0">
+            <h4 style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1rem;font-weight:700;margin:0 0 12px;line-height:1.35;display:flex;gap:11px;align-items:baseline;color:#0a0a0b"><span class="sn" style="flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.75rem;font-weight:700;display:grid;place-items:center;transform:translateY(2px)">4</span>Triples resolve it — the opposite of what Glassdoor did</h4>
+            <figure class="nb wide" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0;max-width:none"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+              <a class="zoom" href="assets/amazon/notebook-output/yt-trigrams.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+                <img src="assets/amazon/notebook-output/yt-trigrams.png" loading="lazy" alt="Top 10 trigrams in the YouTube transcripts: keep eye points 10, 10 hour shift 7, hit subscribe button 5, 10 hour shifts 4, first 90 days 3." style="display:block;width:100%;height:auto;border-radius:6px">
+                <span class="zoomhint" style="display:none">Tap to enlarge</span>
+              </a>
+              <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b"><em>keep eye points</em> 10</b> — the two fragments resolve into <b style="color:#0a0a0b"><em>keep an eye on your points</em></b>, the attendance system. <em>10 hour shift</em> sits second at 7, and <em>first 90 days</em> appears at 3.</figcaption>
+            </figure>
+            <p class="stepgot" style="max-width:68ch;margin:10px 0 0;padding:11px 14px;border-radius:4px;background:#eef0fe;font-size:.88rem;line-height:1.7;max-width:none"><b>Bought:</b> a finding the shorter windows could not reach, with frequencies that still hold up. Two of the top four bars are shift length. The top one is the points system.<br><b>Still could not:</b> be trusted uncritically. See the artefact noted below.</p>
+          </section>
+          </div>
+          <p class="verdict" style="max-width:68ch;margin:4px 0 16px;padding:12px 15px;border-left:3px solid #6366f1;font-size:.93rem;line-height:1.65;max-width:none"><b>Verdict: YouTube rewards triples.</b> The window that broke Glassdoor is the one that produced this corpus’s clearest result.</p>
+        </div>
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>The finding underneath both ladders.</b> The right <em>n</em> is a property of the text, not a
+      setting you pick in advance. Long spoken transcripts support trigrams and reward them. Short
+      written complaint fields hit their floor at bigrams. Running the same four passes on both is what
+      made that visible. Running it on one and assuming the other would behave the same way is the
+      mistake it prevented.</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>And one artefact worth showing rather than trimming:</b>
+      <em>hit subscribe button</em> ranks third in the YouTube trigrams at 5 occurrences. It is channel
+      boilerplate, not employee voice, and visible proof that the YouTube pipeline picks up platform
+      language the Glassdoor pipeline never sees. It is left in the chart because removing it quietly
+      would hide exactly the kind of contamination a reader should be able to check for.</p>
+
+    </section>
+
+    
+    <section id="act3" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">Act III — What the clock counts</h2>
+
+      <p class="lede" style="max-width:68ch;font-size:1.06rem;color:#44444b">Counting words instead of scoring them turned up something the scores had no way
+      to reach: a single metaphor that recurs across the entire satisfaction range, on both platforms,
+      over eighteen months.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Eight people who have never met</h3>
+      <figure style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/robot_motif.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/robot_motif.png" loading="lazy" alt="Eight quotations in date order — six Glassdoor reviewers rated one to five stars and two YouTube speakers — all describing the work as being treated like a robot or a machine." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Eight voices, two platforms, eighteen months, none aware of each other</b> —
+        Glassdoor reviews rated 1★, 3★, 3★, 4★, 5★ and 5★, plus two YouTube accounts, in date order.
+        Every hit for <em>robot</em> and <em>machine</em> was read individually; literal senses were
+        excluded (vending machines, equipment faults, “robotics fulfillment center”).</figcaption>
+      </figure>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">What the words point at</h3>
+      <p style="max-width:68ch">The counting itself is in Act II. What it produced, on the complaint field: the load-and-rest
+      cluster ahead of every other kind of term, and the pairs that resolve what the single words could
+      not. <em>break</em> alone could mean a broken process. <em>break time</em> and <em>use break</em>
+      cannot.</p>
+
+      <p style="max-width:68ch">Keyword theme tagging on the same text ranks <strong style="color:#0a0a0b;font-weight:650">Scheduling &amp; Physical Exhaustion
+      first (52 reviews)</strong>, Management &amp; Leadership Friction second (34), Tracking &amp;
+      Point System Pressure third (11), and that ranking is stable across all three text bases, which
+      is the check that matters, since the tagging is keyword-matched against word lists I wrote
+      myself.</p>
+
+      <figure style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/sentiment_by_theme_v2.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/sentiment_by_theme_v2.png" loading="lazy" alt="Sentiment within each theme; scheduling carries the highest share of negative-labelled reviews." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Volume and valence agree.</b> Scheduling carries the highest negative share of
+        any theme — 37% against 21% and 18%, and holds that position at both candidate thresholds. The
+        labels themselves stay unreliable, so the argument rests on theme volume and read source text,
+        not on these bars.</figcaption>
+      </figure>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Two platforms, two registers, and one shared core</h3>
+
+      <p style="max-width:68ch">The two sources were cleaned and counted separately, then their vocabulary was rendered the
+      same way. The pair is not a ranking. It shows <strong style="color:#0a0a0b;font-weight:650">how differently the same job gets described
+      depending on where you are standing when you describe it.</strong></p>
+
+      <div class="pair" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <figure class="nb" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+          <a class="zoom" href="assets/amazon/notebook-output/wordcloud-glassdoor.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+            <img src="assets/amazon/notebook-output/wordcloud-glassdoor.png" loading="lazy" alt="Word cloud of the Glassdoor complaint field. Largest words: hour, shift, day, long, management, leadership, environment, break, physically." style="display:block;width:100%;height:auto;border-radius:6px">
+          </a>
+          <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Glassdoor — written, after the fact.</b> Around the shared core sits
+          institutional vocabulary: <em>management, leadership, promotion, favoritism, culture,
+          department, policies, expectation</em>. This is someone filling in a form, sorting the job
+          into categories.</figcaption>
+        </figure>
+        <figure class="nb" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;border-style:dashed;max-width:560px;margin-left:auto;margin-right:auto;margin:0"><div style="font-size:.63rem;font-weight:700;letter-spacing:.12em;color:#71717a;padding:2px 4px 10px">UNEDITED ANALYSIS OUTPUT</div>
+          <a class="zoom" href="assets/amazon/notebook-output/wordcloud-youtube.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+            <img src="assets/amazon/notebook-output/wordcloud-youtube.png" loading="lazy" alt="Word cloud of the YouTube transcripts. Largest words: time, hour, working, manager, shift, feel, need, give, aint, ive." style="display:block;width:100%;height:auto;border-radius:6px">
+          </a>
+          <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">YouTube — spoken, in the moment.</b> The same core, surrounded by a different
+          kind of word: <em>aint, ive, feel, need, stuff, questions, remember, tired, pain,
+          feet</em> — contractions, verbs, and the body. These are people talking.</figcaption>
+        </figure>
+      </div>
+
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">The words both platforms share are the ones that matter.</strong> <em>hour</em>, <em>shift</em> and <em>time</em> are
+      the largest words on <strong style="color:#0a0a0b;font-weight:650">both</strong> clouds, produced by two separate pipelines from two
+      unrelated sources. Neither cloud is led by a pay word. The floor vocabulary from the glossary
+      surfaces here too — <em>rate</em>, <em>points</em>, <em>vto</em>, <em>blue badge</em> — the terms
+      a general-purpose sentiment lexicon scores at zero.</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>What these two figures are not.</b> Word clouds encode frequency as type size,
+      which the eye reads unreliably, and the layout is arbitrary. They cannot support a ranking —
+      step 2 of the ladder in Act II does that job with a chart you can read off. These are here for
+      <em>register</em>. Both are the analysis’s own stored output, <b>unedited and
+      independently checkable</b>.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">The mechanism</h3>
+      <figure style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/break_voices.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/break_voices.png" loading="lazy" alt="Nine voices on break time ordered from one star to five stars: seven Glassdoor reviewers and two YouTube speakers, the last of them an area manager describing how break timing is enforced." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Nine voices, ordered by the rating they gave the job.</b> Break time is raised by
+        reviewers at every star level, and four of the nine rated the job 4★ or 5★. Two of them wrote it
+        in the <em>advice to management</em> field rather than the complaints field. The last voice is an
+        area manager, who describes the enforcement side of the same mechanism.</figcaption>
+      </figure>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">Nine of 139 Glassdoor reviews raise break time: <b>1★ 2/13 · 2★ 1/11 · 3★ 1/41 ·
+      4★ 1/42 · 5★ 4/32</b>. Two further matches were read and excluded as idiom
+      (<em>“break the barriers”</em>, <em>“get a break on positions”</em>).
+      Small numbers throughout: this is an existence-and-spread claim, not a prevalence estimate. The
+      unprompted Reddit baseline in <a class="jump" href="#act4" style="color:#6366f1;text-decoration:none;white-space:nowrap;font-weight:600">Act IV</a> puts break and rest at 2%,
+      and that figure is reported there rather than hidden.</p>
+
+      <p style="max-width:68ch">Amazon’s policy separates two things that are easily conflated: an <strong style="color:#0a0a0b;font-weight:650">unpaid meal
+      break</strong> on shifts over five hours, and, distinct from it, <strong style="color:#0a0a0b;font-weight:650">paid rest breaks</strong>
+      at intervals through the shift. This is about the paid rest break, and       <strong style="color:#0a0a0b;font-weight:650">the analysis deliberately puts no number on it.</strong> My two primary sources give three
+      reports and they disagree: one Glassdoor reviewer writes <em>“as a part time you only get 15 mins
+      break”</em>. Two YouTube speakers describe 30-minute breaks. <strong style="color:#0a0a0b;font-weight:650">No associate in either primary source
+      reports a 10-minute one</strong>. That figure comes from Reddit: the associate in the thread below
+      was told 10 minutes by their manager, and a commenter quotes the Amazon handbook as
+      <em>“a 10 minute paid non-working rest period for every 4 hours worked”</em>. Nobody in
+      that thread can produce the handbook. Length varies by site, role and state, <strong style="color:#0a0a0b;font-weight:650">so the argument does
+      not rest on the number. It rests on how the clock runs.</strong></p>
+
+      <figure class="diagram" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/break_anatomy.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/break_anatomy.png" loading="lazy" alt="One paid rest break of 10 to 15 minutes, shown undivided, with three quoted claims drawing on it — walking there, walking back, and scanning in — and actual rest drawn as the dashed residual." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Rest is what is left over.</b> Three claims on the interval are quoted. The
+        fourth — actually resting — is only what the other three leave behind, which is why it is drawn
+        dashed. An r/AmazonFC commenter does the same arithmetic out loud from a different site:
+        <em>“Really it’s 10 mins with 2.5 mins to walk out to break and 2.5 mins added to
+        walk back to your assignment. Hence ‘15’ mins.”</em></figcaption>
+      </figure>
+
+      <p style="max-width:68ch">The three are named in a single passage of one Glassdoor review (#116, Inbound Stower, 1★), and the pattern is corroborated from two independent directions: a <strong style="color:#0a0a0b;font-weight:650">5★ reviewer</strong>
+      whose only advice to management includes <em>“giving five minute grace periods after each break for
+      associates to get back on time”</em>, and <strong style="color:#0a0a0b;font-weight:650">36 r/AmazonFC posts</strong> mentioning a
+      write-up, point or occurrence alongside break language.</p>
+
+      <figure class="diagram" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/root_cause_tree_v4.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/root_cause_tree_v4.png" loading="lazy" alt="Root cause tree: three branches feed the same exhaustion; only break time erosion is changeable at zone level." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Three branches, one changeable.</b> Shift and staffing requires headcount
+        approval. Rate and quota systems require a policy audit. Break conditions are the only branch a
+        zone lead can change alone.</figcaption>
+      </figure>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Who carries it</h3>
+
+      <details style="margin:26px 0;border:1px solid #d6d6db;border-radius:10px;background:#ffffff;padding:0 20px 14px">
+        <summary style="cursor:pointer;padding:15px 0;font-weight:650;color:#0a0a0b;font-size:.94rem;list-style:none"><span style="color:#6366f1;font-weight:700;margin-right:8px">+</span>The six segments, and what is actually inside them</summary>
+        <div class="scroll" style="overflow-x:auto;margin:26px 0">
+          <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+            <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Segment</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">n</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Job titles it contains</th></tr></thead>
+            <tbody>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">Full-Time Frontline Associates</b></td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">83</b></td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">38 distinct title strings. <em>Associate</em> ×16, <em>Warehouse Associate</em> ×13,
+                    <em>Inbound Stower</em> ×4, <em>Picker</em> ×3, <em>Fulfillment Associate</em> ×3,
+                    <em>Picker/Packer</em> ×2 …</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Part-Time Frontline Associates</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">23</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><em>Associate</em>, <em>Warehouse Worker</em>, <em>FC Associate</em>, <em>FC Associate I</em> …</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Specialist / Support</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">10</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><em>Whs Specialist</em>, <em>WHSS</em>, <em>HR Partner</em>, <em>IT Support Engineer</em>, <em>SDE</em> …</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Management</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">10</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><em>Area Manager</em>, <em>Process Assistant</em>, <em>Operations Manager</em> …</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Unclear / Other</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">8</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">5 blank, plus non-English and non-FC titles</td></tr>
+              <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Contract / Seasonal Frontline</td><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">5</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><em>Warehouse Associate</em>, <em>FC Associate</em>, <em>Fulfillment Associate</em></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>Why the priority segment is not called “Pickers”.</b> Of its 83
+        reviews, only <b>17 name a specific task</b> (stow, pick, pack or sort) and <b>52 give an
+        “Associate” variant with no task named</b>. A picker-versus-stower comparison would look sharper and would be
+        built on 3 reviews against 4. <b>Employment type is the finest cut this data actually
+        supports</b>, and it is the more useful one anyway, because part-time frontline associates do
+        the same work for fewer hours, which is what makes the −0.58 gap below readable as an exposure
+        effect rather than a role effect.</p>
+      </details>
+
+      <figure style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden">
+        <a class="zoom" href="assets/amazon/charts/segment_worklife.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/segment_worklife.png" loading="lazy" alt="Work–life scores by segment; full-time frontline associates score lowest among frontline roles." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Same work, fewer hours, a −0.58 gap — exposure is the variable.</b> Full-Time
+        Frontline Associates, <b style="color:#0a0a0b">83 of 139 reviews (60%)</b> and the largest of six segments, score
+        <b style="color:#0a0a0b">3.13</b> on work–life against part-time frontline’s <b style="color:#0a0a0b">3.71</b>.</figcaption>
+      </figure>
+
+      <p style="max-width:68ch">Size alone does not make a segment the priority. The engagement’s prescribed scoring method
+      multiplies three 1–5 judgements — <strong style="color:#0a0a0b;font-weight:650">Impact × Severity × Size</strong>, and full-time
+      frontline scores <strong style="color:#0a0a0b;font-weight:650">3 × 5 × 5 = 75</strong>, against <strong style="color:#0a0a0b;font-weight:650">24</strong> for Management.</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">Impact and Severity are qualitative judgements read out of the review text, not
+      rating averages. The score ranks segments, it does not measure them. And Management rates
+      <em>worse</em> on every dimension (work–life 1.50, overall 2.70, leadership 2.12). It is excluded
+      on sample size — 8 valid ratings against 63 — not on severity.</p>
+
+      <figure class="diagram narrow" style="margin:36px 0;background:#ffffff;border:1px solid #d6d6db;border-radius:12px;padding:14px;overflow:hidden;max-width:560px;margin-left:auto;margin-right:auto">
+        <a class="zoom" href="assets/amazon/charts/friction_map_v3.png" target="_blank" rel="noopener" style="color:#6366f1;text-decoration:none;display:block;position:relative;text-decoration:none">
+          <img src="assets/amazon/charts/friction_map_v3.png" loading="lazy" alt="Friction map for full-time frontline associates: three friction points and their business impacts, feeding a vicious cycle." style="display:block;width:100%;height:auto;border-radius:6px">
+          <span class="zoomhint" style="display:none">Tap to enlarge</span>
+        </a>
+        <figcaption style="font-size:.85rem;line-height:1.6;color:#71717a;padding:14px 6px 4px;max-width:78ch"><b style="color:#0a0a0b">Three friction points, each with a named business cost, feeding one another.</b>
+        The third — no reliable source for what break you are owed — is new since the original
+        submission.</figcaption>
+      </figure>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">And upstream of all of it: nobody can establish what they are owed</h3>
+
+      <p style="max-width:68ch">One r/AmazonFC thread, <em>New break policy</em>, is a nine-hour flex associate asking what
+      break they’re entitled to. <strong style="color:#0a0a0b;font-weight:650">Twelve people answer and no two answers match</strong> —
+      a paid 10, a paid 15, two 15s, two 10s, a paid 30, no paid break at all, two 45-minute unpaid ones.
+      The second break starts at hour 8, or hour 10, or not at all, <em>“depending on
+      site.”</em></p>
+
+      <blockquote class="plain" style="margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid #6366f1;font-size:clamp(1.05rem,2.1vw,1.3rem);line-height:1.6;color:#0a0a0b;max-width:68ch;border-left-color:#d6d6db;font-size:1.02rem;color:#44444b">
+        “HR says one thing then site notification update on break times says another. What the
+        manager says is also completely different. I just followed what the manager said.”
+      </blockquote>
+
+      <p style="max-width:68ch">Everyone in the thread cites the same authority. Nobody can produce it:</p>
+      <blockquote class="plain" style="margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid #6366f1;font-size:clamp(1.05rem,2.1vw,1.3rem);line-height:1.6;color:#0a0a0b;max-width:68ch;border-left-color:#d6d6db;font-size:1.02rem;color:#44444b">
+        “I know everyone mentions the ‘Amazon handbook’ but can someone link the PDF or
+        screenshot the exact section it talks about this?”
+      </blockquote>
+
+      <p style="max-width:68ch">No one does. <strong style="color:#0a0a0b;font-weight:650">This is the friction the pilot’s second half addresses</strong> — a
+      posted entitlement card naming its own policy source costs nothing, and it is the only
+      intervention on this page that would have resolved this thread.</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>Source.</b> r/AmazonFC, <em>New break policy</em>, saved as a 12-page PDF
+      alongside the analysis files. Not in the 963-post scrape, which captured posts, not comment
+      threads. Quoted here as a documented instance, not a measure of how often this happens.</p>
+    </section>
+
+    
+    <section id="act4" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">Act IV — What one zone can change in two weeks, and what the data cannot support</h2>
+
+      <p class="lede" style="max-width:68ch;font-size:1.06rem;color:#44444b">Three moves from here, in order: an independent check that complicates the
+      finding, the reasoning that narrows it to something a zone can actually run, and the
+      recommendation itself.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">The check that pushed back</h3>
+      <p style="max-width:68ch">The check: in <strong style="color:#0a0a0b;font-weight:650">479 unfiltered r/AmazonFC posts</strong> — nine days, no search term,
+      the only Reddit block with a valid denominator — what do FC workers raise when nobody prompts
+      them? <strong style="color:#0a0a0b;font-weight:650">Scheduling leads at 31%</strong>; pay sits at 7%; <strong style="color:#0a0a0b;font-weight:650">break and rest
+      specifically is smallest, at 2%</strong>. The full seven-topic table and the counting pattern for
+      each row are published in the methodology note so it can be rebuilt.</p>
+
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">Half of this confirms me and half does not.</strong> Scheduling is the largest
+      unprompted topic by more than double the next one — the top theme holds. But break timing
+      specifically is near the bottom. <strong style="color:#0a0a0b;font-weight:650">So the claim narrowed:</strong> the recommendation below
+      is the most tractable branch of the top theme, not the loudest specific grievance.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Why the recommendation is smaller than the finding</h3>
+
+      <p class="lede" style="max-width:68ch;font-size:1.06rem;color:#44444b">The analysis names <strong style="color:#0a0a0b;font-weight:650">scheduling and physical exhaustion</strong>. The pilot
+      recommends <strong style="color:#0a0a0b;font-weight:650">seating and a card</strong>. That gap is deliberate, and it is the first thing
+      a reader should be able to interrogate.</p>
+
+      <p style="max-width:68ch">Held against the brief’s four criteria, every scheduling intervention a reader would
+      reach for first fails, not on merit but on who is allowed to authorise it:</p>
+
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Intervention aimed at scheduling</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Why it does not fit the brief</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Shorten shifts — 10–12 hours down to 8</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">A headcount change. Needs a staffing model and budget sign-off well above site level.</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Add breaks, or make them longer</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">A policy change, not a site decision — and reported entitlement already varies by
+                    state and site, so a zone cannot unilaterally move it.</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Introduce task rotation, so nobody stows or walks all shift</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Requires cross-training capacity and a scheduling-system change. Defensible, but
+                    not runnable in two weeks by one person.</td></tr>
+            <tr><td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Ease rate targets during peak</td>
+                <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">A rate and quota policy audit — the third root-cause branch, and explicitly outside
+                    zone authority.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">What survives that filter is not a smaller problem. It is the same problem at the one
+      point where a zone lead actually holds a lever.</strong> Break time is the sub-branch of
+      scheduling where the loss is created <em>inside</em> the shift rather than by its length: the
+      clock counts the walk, and nobody can establish what they are owed. Neither of those costs money,
+      and both are named by reviewers from 1★ to 5★.</p>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a"><b>The other branches do not disappear. They get handed on.</b> Shift length and
+      rotation belong in a staffing review. Rate and quota policy belongs in the audit P1 begins to
+      evidence.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Recommendations</h3>
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">Evidence below is Glassdoor and YouTube for the mechanism (Act III), Reddit for
+      the write-up correlation and the entitlement-confusion thread; sourced in full where each claim
+      was first made.</p>
+      <div class="scroll" style="overflow-x:auto;margin:26px 0">
+        <table style="border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem">
+          <thead><tr><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Priority</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Action</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Owner</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">Signal to track</th><th style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#71717a;font-weight:700;border-bottom:2px solid #d6d6db">What would falsify it</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">P0</b></td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Satellite rest point (seating + water) in the zone farthest from the main break room,
+                  plus a <b style="color:#0a0a0b">posted break-entitlement card</b> at each workstation naming its policy source</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Zone shift lead</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">A one-question end-of-shift card (<em>did you get enough rest on break today?</em>),
+                  baselined in the first two days; break-related write-ups vs. the same zone’s prior
+                  two weeks</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">If sufficiency does not move and write-ups do not fall within two weeks, walking
+                  distance is not the binding constraint and P1 is the better target</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top"><b style="color:#0a0a0b">P1</b></td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Same-shift appeal route for scan-timing errors, so a system fault does not become a
+                  disciplinary record</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Area Manager + HR</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Appeal volume and time-to-resolution — <b style="color:#0a0a0b">volume is the more informative of the two</b></td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top">Near-zero volume alongside unchanged write-ups means the channel is not trusted, which
+                  is a different problem</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0"><b style="color:#0a0a0b">P2</b></td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Add a break-sufficiency item to the existing engagement survey, reported by zone,
+                  shift and tenure</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">People Analytics</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">Establish a baseline; track quarterly</td>
+              <td style="text-align:left;padding:11px 14px;border-bottom:1px solid #d6d6db;vertical-align:top;border-bottom:0">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="max-width:68ch"><strong style="color:#0a0a0b;font-weight:650">No target percentages are stated.</strong> Two of these metrics do not exist at the
+      site yet, so there is no baseline to improve on. The pilot’s first job is to create one. A
+      stated target with nothing behind it would be a worse answer than no target.</p>
+
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">The ask, in an associate’s own words</h3>
+      <p style="max-width:68ch">The last word belongs to the 5★ reviewer — five of the six rated dimensions at 5 — whose entire
+      advice to management is three lines:</p>
+
+      <blockquote style="margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid #6366f1;font-size:clamp(1.05rem,2.1vw,1.3rem);line-height:1.6;color:#0a0a0b;max-width:68ch">
+        Try to hear every employee out,<br>
+        Look into giving five minute grace periods after each break for associates to get back on time
+        and begin work,<br>
+        <strong style="color:#0a0a0b;font-weight:650">Realize not every employee is a robot.</strong>
+        <cite style="display:block;margin-top:.8em;font-size:.85rem;font-style:normal;color:#71717a;font-weight:600">Glassdoor review #140 · 5★ · March 2026</cite>
+      </blockquote>
+
+      <p style="max-width:68ch">Someone who likes this job. He is asking for something.</p>
+
+      <h3 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.25;font-size:1.15rem;font-weight:700;margin:2.4em 0 .5em">Methodological caveats &amp; bias disclosures</h3>
+      <p style="max-width:68ch">Three limits, and what each one cost the conclusion.</p>
+
+      <ol class="limits" style="max-width:68ch;list-style:none;padding:0;max-width:68ch">
+        <li style="position:relative;padding-left:44px;margin-bottom:1.5em"><span style="position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.78rem;font-weight:700;display:grid;place-items:center">1</span><strong style="color:#0a0a0b;font-weight:650">Attribution bias — self-reported status is not observed attrition.</strong>
+        Glassdoor’s <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">employee_type</code> field does carry a self-reported Current/Former
+        split (73 former, 66 current, of 139) — the corpus is not entirely silent here, and former
+        employees do rate work–life lower, <b>2.92 against 3.25</b>, the direction the argument
+        needs. But it is a snapshot self-report at the moment of posting, not HR data: no exit date, no
+        stated reason, and no way to join it to the company’s own 150% figure. The step from
+        complaint to attrition is still an inference the data cannot close on its own — which is why
+        the 150% figure stays labelled as supplied context.
+        <br><b>How the recommendation absorbs it:</b> the pilot doesn’t need the causal link to be
+        worth running — zero facility cost, zone-level authority, a problem named 1★ to 5★, now
+        corroborated in direction by the Former/Current split. P2 tracks a break-sufficiency baseline
+        rather than a retention correlation, because a real retention correlation is exactly what this
+        data cannot support.</li>
+
+        <li style="position:relative;padding-left:44px;margin-bottom:1.5em"><span style="position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.78rem;font-weight:700;display:grid;place-items:center">2</span><strong style="color:#0a0a0b;font-weight:650">Retrieval bias — one of my own search terms contained the number “15”.</strong>
+        The Reddit queries included <code style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eef0fe;padding:.12em .38em;border-radius:4px;color:#0a0a0b">15 minute break</code> (189 posts) among others, so any
+        pattern of users saying “15 minutes” is partly an artefact of my own retrieval. Only the 479
+        unfiltered posts have a valid denominator; the 963-post block establishes existence, not
+        prevalence.
+        <br><b>How the conclusion absorbs it:</b> no duration is asserted anywhere — the finding rests
+        on the scan-to-scan mechanism, not a number my own search terms could have manufactured. This
+        caught a live error: an earlier version of the break diagram carried “10 minutes,” a figure in
+        neither primary source.</li>
+
+        <li style="position:relative;padding-left:44px;margin-bottom:1.5em"><span style="position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:#eef0fe;color:#6366f1;font-size:.78rem;font-weight:700;display:grid;place-items:center">3</span><strong style="color:#0a0a0b;font-weight:650">Instrument limits — the taxonomy, the sample and the pipelines are all mine.</strong>
+        Three themes I authored, matched against word lists I also wrote, with no second coder; 63 of
+        139 reviews carry no theme tag and skew short, so prevalence is measured on the more talkative
+        half. The break-policy wording is quoted from memory on Reddit and unverifiable against a
+        primary source — twelve accounts in one thread is itself part of the finding. The two cleaning
+        pipelines are individually defensible but not identical, which rules out cross-platform
+        comparison of negative language.
+        <br><b>What holds anyway:</b> the theme ranking is stable across all three text bases, and the
+        priority segment survives holding out every review I collected myself.</li>
+      </ol>
+
+      <p class="note" style="max-width:68ch;font-size:.86rem;color:#71717a">Errors found and fixed in my own earlier drafts are logged in the correction log
+      rather than repeated here.</p>
+    </section>
+
+    <section id="behind" style="padding:56px 0;border-top:1px solid #d6d6db">
+      <h2 style="font-family:'Space Grotesk', system-ui, sans-serif;color:#0a0a0b;line-height:1.2;letter-spacing:-0.015em;font-size:clamp(1.45rem,3.2vw,2.05rem);font-weight:700;margin:0 0 .6em">The deck</h2>
+      <p style="max-width:68ch">The same recommendation, packaged for a site leadership audience: the problem, the evidence,
+      the priority scoring, the intervention and the pilot design. Six slides.</p>
+      <div style="margin:20px 0 0;border:1px solid #d6d6db;border-radius:12px;overflow:hidden;background:#ffffff">
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #d6d6db;background:#ffffff">
+          <button id="deckZoomOut" type="button" style="width:30px;height:30px;border:1px solid #d6d6db;border-radius:6px;background:#ffffff;color:#0a0a0b;font-size:17px;line-height:1;cursor:pointer;font-family:'DM Sans', system-ui, sans-serif">−</button>
+          <button id="deckZoomIn" type="button" style="width:30px;height:30px;border:1px solid #d6d6db;border-radius:6px;background:#ffffff;color:#0a0a0b;font-size:17px;line-height:1;cursor:pointer;font-family:'DM Sans', system-ui, sans-serif">+</button>
+          <span id="deckZoomLabel" style="font-size:.8rem;color:#71717a;min-width:44px">100%</span>
+          <button id="deckZoomReset" type="button" style="height:30px;padding:0 12px;border:1px solid #d6d6db;border-radius:6px;background:#ffffff;color:#44444b;font-size:.78rem;cursor:pointer;font-family:'DM Sans', system-ui, sans-serif">Reset</button>
+          <span style="margin-left:auto;font-size:.76rem;color:#a1a1aa">Drag to pan · scroll for pages</span>
+        </div>
+        <div id="deckPages" style="max-height:760px;overflow:auto;padding:16px;display:flex;flex-direction:column;align-items:flex-start;gap:16px;background:#e9e9ee">
+          <div style="padding:40px;text-align:center;font-size:.86rem;color:#71717a">Loading deck…</div>
+        </div>
+      </div>
+
+    </section>
+
+    <nav style="margin:64px 0 0;padding:44px 0 90px;border-top:1px solid #d6d6db" aria-label="More projects">
+      <p style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#71717a;margin:0 0 22px">Keep reading</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+        <a href="index.html#projects" style="display:flex;flex-direction:column;gap:6px;padding:26px 28px;border:1px solid #d6d6db;border-radius:14px;background:#ffffff;text-decoration:none;transition:.22s ease" style-hover="border-color:#6366f1;transform:translateY(-3px);box-shadow:0 14px 34px rgba(10,10,11,.07)">
+          <span style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#71717a">← All projects</span>
+          <span style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1.15rem;font-weight:700;color:#0a0a0b;line-height:1.3">Back to the full portfolio</span>
+          <span style="font-size:.88rem;color:#71717a">Data &amp; AI, plus a separate group of illustration and design work</span>
+        </a>
+        <a href="project-wayfair.html" style="display:flex;flex-direction:column;gap:6px;padding:26px 28px;border:1px solid #6366f1;border-radius:14px;background:#eef0fe;text-decoration:none;transition:.22s ease" style-hover="transform:translateY(-3px);box-shadow:0 14px 34px rgba(99,102,241,.16)">
+          <span style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6366f1">Next project →</span>
+          <span style="font-family:'Space Grotesk', system-ui, sans-serif;font-size:1.15rem;font-weight:700;color:#0a0a0b;line-height:1.3">AI Agents for Market Intelligence</span>
+          <span style="font-size:.88rem;color:#71717a">Wayfair · five n8n workflows for one rug category</span>        </a>
+      </div>
+    </nav>
+
+    </main>
+  </div>
 </div>
+
+
+
+
+</div>
+
+</x-dc>
 </body>
 </html>

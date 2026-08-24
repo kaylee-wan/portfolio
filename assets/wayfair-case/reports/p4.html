@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Insights & Content Report | Wayfair Shag Rug</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    
+    /* Header */
+    .header { background: linear-gradient(135deg, #7B2D8E 0%, #5E1A6E 100%); color: white; padding: 40px; border-radius: 12px; margin-bottom: 30px; }
+    .header h1 { font-size: 2.2em; margin-bottom: 10px; }
+    .header .subtitle { font-size: 1.2em; opacity: 0.9; }
+    .header .meta { margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .header .meta-item { background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 20px; font-size: 0.9em; }
+    
+    /* Sections */
+    .section { background: white; border-radius: 12px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .section h2 { color: #7B2D8E; font-size: 1.5em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f0e6f4; }
+    .section h3 { color: #5E1A6E; font-size: 1.2em; margin: 25px 0 15px 0; }
+    .section > p { color: #666; margin-bottom: 20px; }
+    
+    /* Executive Summary */
+    .exec-summary { background: linear-gradient(135deg, #f8f4fa 0%, #fff 100%); border-left: 4px solid #7B2D8E; }
+    .exec-summary p { font-size: 1.05em; margin-bottom: 15px; white-space: pre-line; }
+    
+    /* Key Insights Cards */
+    .key-insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+    .insight-card { background: white; border: 1px solid #e0d4e6; border-radius: 8px; padding: 20px; text-align: center; }
+    .insight-card .number { font-size: 2.2em; font-weight: bold; color: #7B2D8E; }
+    .insight-card .label { font-size: 0.85em; color: #666; margin-top: 5px; }
+    
+    /* Data Foundation */
+    .data-sources { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .data-source-card { background: #f8f9fa; border-radius: 8px; padding: 20px; }
+    .data-source-card h4 { color: #7B2D8E; margin-bottom: 12px; }
+    .data-source-card ul { list-style: none; padding-left: 0; }
+    .data-source-card li { padding: 8px 0; border-bottom: 1px solid #e9ecef; font-size: 0.95em; }
+    .data-source-card li:last-child { border-bottom: none; }
+    
+    /* Content Ideas */
+    .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .content-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+    .content-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .content-card-header { background: linear-gradient(135deg, #7B2D8E 0%, #9B4DB8 100%); color: white; padding: 15px 20px; }
+    .content-card-header .type { font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+    .content-card-header h4 { font-size: 1.1em; margin-top: 5px; }
+    .content-card-body { padding: 20px; }
+    .content-card-body p { color: #555; margin-bottom: 15px; }
+    .data-tag { display: inline-block; background: #f0e6f4; color: #7B2D8E; padding: 6px 12px; border-radius: 15px; font-size: 0.85em; margin-bottom: 10px; }
+    .keywords { margin-top: 10px; }
+    .keyword { display: inline-block; background: #e9ecef; color: #666; padding: 4px 10px; border-radius: 12px; font-size: 0.8em; margin: 3px 3px 3px 0; }
+    
+    /* Social Posts */
+    .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+    .social-post { background: #f8f9fa; border-radius: 8px; padding: 15px; }
+    .platform-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75em; font-weight: 600; color: white; margin-bottom: 10px; }
+    .platform-badge.ig { background: linear-gradient(45deg, #f09433, #dc2743); }
+    .platform-badge.pin { background: #E60023; }
+    .platform-badge.fb { background: #1877F2; }
+    .platform-badge.tt { background: #000; }
+    .social-post p { font-size: 0.95em; margin-bottom: 8px; }
+    .hashtags { color: #7B2D8E; font-size: 0.85em; }
+    
+    /* Campaigns */
+    .campaign-card { background: linear-gradient(135deg, #f8f4fa 0%, #fff 100%); border: 1px solid #e0d4e6; border-radius: 10px; padding: 25px; margin-bottom: 20px; }
+    .campaign-card h4 { color: #5E1A6E; font-size: 1.3em; margin-bottom: 8px; }
+    .campaign-card .tagline { color: #7B2D8E; font-style: italic; font-size: 1.1em; margin-bottom: 15px; }
+    .campaign-card > p { margin-bottom: 20px; }
+    .campaign-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+    .campaign-detail { background: white; padding: 15px; border-radius: 8px; }
+    .campaign-detail h5 { color: #7B2D8E; font-size: 0.9em; margin-bottom: 8px; }
+    .campaign-detail p { font-size: 0.9em; color: #555; }
+    
+    /* Email Subjects */
+    .email-ideas { display: flex; flex-direction: column; gap: 10px; }
+    .email-subject { display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 15px 20px; border-radius: 8px; }
+    .email-subject .icon { font-size: 1.3em; }
+    .email-subject .subject-text { flex: 1; font-size: 1em; }
+    .email-subject .open-rate { background: #e0f2e9; color: #059669; padding: 5px 12px; border-radius: 15px; font-size: 0.8em; font-weight: 500; }
+    .email-subject .open-rate.medium { background: #fef3c7; color: #d97706; }
+    
+    /* Competitive Angles */
+    .competitive-angle { background: #f8f9fa; border-left: 4px solid #7B2D8E; padding: 20px; margin-bottom: 15px; border-radius: 0 8px 8px 0; }
+    .competitive-angle h4 { color: #5E1A6E; margin-bottom: 12px; }
+    .competitive-angle p { margin-bottom: 10px; font-size: 0.95em; }
+    
+    /* Priorities */
+    .recommendation { display: flex; gap: 20px; margin-bottom: 15px; align-items: flex-start; }
+    .priority { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; color: white; flex-shrink: 0; }
+    .priority.high { background: #7B2D8E; }
+    .priority.medium { background: #9B4DB8; }
+    .recommendation-content { flex: 1; background: #f8f9fa; padding: 15px 20px; border-radius: 8px; }
+    .recommendation-content h4 { color: #5E1A6E; margin-bottom: 8px; }
+    .recommendation-content p { font-size: 0.95em; color: #555; }
+    
+    /* Footer */
+    .footer { background: #5E1A6E; color: white; padding: 30px; border-radius: 12px; text-align: center; margin-top: 30px; }
+    .footer .logo { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+    .footer p { opacity: 0.9; font-size: 0.9em; margin-top: 5px; }
+    
+    @media (max-width: 768px) {
+      .data-sources, .content-grid, .social-grid, .campaign-details { grid-template-columns: 1fr; }
+      .header .meta { flex-direction: column; gap: 10px; }
+      .recommendation { flex-direction: column; gap: 10px; }
+      .priority { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>AI Insights & Content Report</h1>
+      <p class="subtitle">Wayfair Shag Rug - Neutral Core + Design-Forward Premium</p>
+      <div class="meta">
+        <span class="meta-item">📅 August 11, 2026</span>
+        <span class="meta-item">📊 4 Key Data Points</span>
+        <span class="meta-item">💡 6 Content Ideas</span>
+        <span class="meta-item">🎯 3 Campaigns</span>
+      </div>
+    </header>
+    
+    <section class="section exec-summary">
+      <h2>📋 Executive Summary</h2>
+      <p>Shag rugs are moving beyond the safe, budget-friendly neutrals that dominate today's catalog. P2 shows 89% of assortment sits under $200 with no $500+ options, even as the premium segment grows at 12.44% CAGR and social platforms show strong interest in gradient, color-blocked, and updated-neutral styles (sage, dusty blue, warm browns) that aren't yet represented. P3 confirms Wayfair already holds a real advantage here: exclusive designer collaborations (Loloi x Angela Rose, Rifle Paper Co., Leanne Ford) sit in a $200-$400 band where Walmart has zero presence and Amazon has just one SKU. But this advantage is at risk—several of those same collaboration SKUs score below 4.0 stars, while Amazon's Safavieh Hudson (4.7 stars, 578 reviews) and Walmart's Mainstays (4.5 stars, 4,582 reviews) show far deeper customer trust at lower prices. The Neutral Core + Design-Forward Premium strategy addresses both ends: reinforce the trusted gray/cream/black solid core that already drives sales, while building content and credibility around a design-forward premium tier that fixes underperforming collaborations and tells a stronger story for updated neutrals and bold gradient shag ahead of competitors filling that space.</p>
+      <div class="key-insights">
+  <div class="insight-card">
+    <div class="number">89%</div>
+    <div class="label">Of analyzed shag rug assortment priced under $200, with zero $500+ representation</div>
+  </div>
+
+  <div class="insight-card">
+    <div class="number">12.44% CAGR</div>
+    <div class="label">Premium price segment is the fastest-growing tier in the shag/rug market</div>
+  </div>
+
+  <div class="insight-card">
+    <div class="number">$146.37 avg</div>
+    <div class="label">Wayfair's average shag rug price vs. Amazon ($110.34) and Walmart ($57.18)</div>
+  </div>
+
+  <div class="insight-card">
+    <div class="number">8 of 10 SKUs</div>
+    <div class="label">Wayfair's shag assortment concentrated in the $100-$300 mid-tier</div>
+  </div>
+</div>
+    </section>
+    
+    <section class="section">
+      <h2>📊 Data Foundation</h2>
+      <p>Key insights extracted from your Project 2 and Project 3 reports that inform this content strategy:</p>
+      <div class="data-sources">
+        <div class="data-source-card">
+          <h4>📈 From Market Analysis (P2)</h4>
+          <ul><li>Nearly 80% of current shag assortment sits under $100, while social demand (Pinterest/Instagram) is rapidly expanding toward bold gradient, color-blocked, and updated-neutral styles not yet reflected in catalog.</li><li>Gray and cream together represent 77.7% of observed colors, and solids make up 66.7% of patterns, confirming neutral, texture-forward shag as the current core.</li><li>An emerging 'Bold Eclectic Gradient Shag' micro-segment (rust, plum, color-block) is underserved in current assortment despite strong social pull.</li><li>The premium rug price segment is growing at 12.44% CAGR, reflecting rising demand for designer and luxury shag options even as 77.7% of analyzed products are priced under $100.</li></ul>
+        </div>
+        <div class="data-source-card">
+          <h4>🔍 From Competitor Analysis (P3)</h4>
+          <ul><li>Wayfair's designer collaborations (Loloi x Angela Rose, Rifle Paper Co., Leanne Ford) are exclusive to Wayfair and unavailable on Amazon or Walmart, creating a brand moat in the $200-$400 price band where Walmart has zero SKUs and Amazon has only one.</li><li>Several exclusive Loloi collaboration SKUs score below 4.0 stars, while Amazon's Safavieh Hudson Shag (4.7 stars, 578 reviews) and Walmart's Mainstays Shag (4.5 stars, 4,582 reviews) show deeper social proof at accessible prices.</li><li>Wayfair has only 2 of 10 SKUs priced under $100, compared to Amazon's 6 and Walmart's 9, ceding budget-conscious shoppers to competitors.</li><li>The $200-$400 price band contains only 4 SKUs total across all three retailers, with Walmart entirely absent, flagging a clear whitespace for a curated designer shag collection.</li></ul>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>💡 Content Ideas</h2>
+      <p>Strategic content recommendations, each tied to specific data insights from your reports:</p>
+      <div class="content-grid">
+  <div class="content-card">
+    <div class="content-card-header">
+      <div class="type">Blog Post</div>
+      <h4>The Shag Rug Rules Nobody Tells You (Pile Height, Room by Room)</h4>
+    </div>
+    <div class="content-card-body">
+      <p>Walk readers through matching pile height to how a room actually gets used—high shag for bedrooms and low-traffic reading nooks, medium shag for living rooms—so they can shop with confidence instead of guessing.</p>
+      <div class="data-tag">📊 P2 expert guidance: high shag (2"+) for low-traffic zones, medium shag (1-2") for living rooms, avoid deep pile in high-traffic pathways.</div>
+      <div class="keywords"><span class="keyword">shag rug pile height guide</span><span class="keyword">best shag rug for living room</span><span class="keyword">bedroom shag rug</span></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <div class="content-card-header">
+      <div class="type">Instagram Carousel</div>
+      <h4>Cloud-Soft or Bold Statement: Which Shag Mood Is Your Room?</h4>
+    </div>
+    <div class="content-card-body">
+      <p>A side-by-side carousel contrasting the calm neutral 'cloud comfort' bedroom look with the bold gradient/color-blocked living room look, helping followers identify which direction fits their space.</p>
+      <div class="data-tag">📊 P2 visual trend analysis identifying two emerging directions: neutral 'cloud-soft' retreats and bold gradient/color-blocked maximalist styling.</div>
+      <div class="keywords"><span class="keyword">shag rug bedroom ideas</span><span class="keyword">gradient shag rug</span><span class="keyword">cozy bedroom rug</span></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <div class="content-card-header">
+      <div class="type">Video</div>
+      <h4>What Machine-Washable Shag Actually Looks Like After a Wash</h4>
+    </div>
+    <div class="content-card-body">
+      <p>A short demo-style video showing a washable shag rug before, during, and after cleaning, addressing the maintenance hesitation that keeps pet owners and parents away from high-pile rugs.</p>
+      <div class="data-tag">📊 P2 notes maintenance perception is a top market restraint, and washable shag technology (Ruggable, Tumble, Revival-style innovation) is changing that; care tip includes refluffing pile after washing.</div>
+      <div class="keywords"><span class="keyword">washable shag rug</span><span class="keyword">pet friendly shag rug</span><span class="keyword">how to clean shag rug</span></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <div class="content-card-header">
+      <div class="type">Pinterest Pin</div>
+      <h4>A Living Room Anchored in Warm Wood and High-Pile Softness</h4>
+    </div>
+    <div class="content-card-body">
+      <p>A moodboard-style pin styled around a mid-century living room with a high-pile shag rug as the grounding texture, appealing to the minimalist-plus-texture aesthetic gaining traction on Pinterest.</p>
+      <div class="data-tag">📊 P2 visual trend data: mid-century living rooms grounded by high-pile shag rug for cozy contrast, part of the 'Mid-Century Textured Anchor' micro-segment.</div>
+      <div class="keywords"><span class="keyword">mid century shag rug</span><span class="keyword">living room texture ideas</span></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <div class="content-card-header">
+      <div class="type">Buying Guide</div>
+      <h4>Shag Rug Sizing: How to Actually Fill Your Room</h4>
+    </div>
+    <div class="content-card-body">
+      <p>A practical sizing guide explaining why 6'x9' is the most common size, when to size up to 8'x10' or 9'x12', and how to use a rug pad correctly so furniture and rug work together instead of looking undersized.</p>
+      <div class="data-tag">📊 P2 size distribution data (6'x9' at 44.4%, 9'x12' and 8'x10' each at 22.2%) plus expert guidance on sizing up and pairing with a rug pad cut 1-2 inches smaller.</div>
+      <div class="keywords"><span class="keyword">what size shag rug do I need</span><span class="keyword">oversized area rug guide</span><span class="keyword">rug pad sizing</span></div>
+    </div>
+  </div>
+  <div class="content-card">
+    <div class="content-card-header">
+      <div class="type">Email Series</div>
+      <h4>Finding Your Shag: From Everyday Comfort to Design Statement</h4>
+    </div>
+    <div class="content-card-body">
+      <p>A three-part email series that starts with easy-care neutral basics, moves into room-styling advice, and closes by introducing Wayfair's exclusive designer shag collaborations as the next step up for shoppers ready to invest.</p>
+      <div class="data-tag">📊 P3 notes Wayfair's designer collaborations (Loloi x Angela Rose, Rifle Paper Co., Leanne Ford) are exclusive and unmatched by Amazon or Walmart in the $200-$400 range.</div>
+      
+    </div>
+  </div></div>
+    </section>
+    
+    <section class="section">
+      <h2>📱 Social Media Captions</h2>
+      <p>Ready-to-use captions optimized for each platform:</p>
+      <div class="social-grid">
+        
+  <div class="social-post">
+    <div class="platform-badge ig">Instagram</div>
+    <p>Cloud-soft underfoot, warm wood all around—this is what a slow morning feels like.</p>
+    <div class="hashtags">#ShagRug #CozyBedroom #SoftLiving</div>
+  </div>
+
+  <div class="social-post">
+    <div class="platform-badge ig">Instagram</div>
+    <p>Burnt orange fading into deep plum. Not every rug needs to whisper.</p>
+    <div class="hashtags">#BoldInteriors #GradientRug #StatementFloor</div>
+  </div>
+
+  <div class="social-post">
+    <div class="platform-badge pin">Pinterest</div>
+    <p><strong>The Bedroom Retreat Formula: Warm Wood + Plush Neutral Shag</strong></p>
+    <p>Layer a light, high-pile shag rug against natural wood tones for a bedroom that feels like a quiet, sink-in retreat—no major renovation required.</p>
+  </div>
+
+  <div class="social-post">
+    <div class="platform-badge fb">Facebook</div>
+    <p>Living rooms with foot traffic need a different rug than bedrooms do. If you've ever wondered why your plush rug started looking flat after a few months, pile height might be the reason—medium shag holds up better where people actually walk. We break down what to look for by room.</p>
+  </div>
+
+  <div class="social-post">
+    <div class="platform-badge tt">TikTok</div>
+    <p><strong>Hook:</strong> POV: you finally found the rug that makes your bedroom floor feel like a cloud.</p>
+    <p>Open on bare bedroom floor, cut to laying down a plush neutral shag rug, show feet sinking in, pan to warm morning light across the room. Text overlay: 'high-pile shag = bedroom's best decision.' End on a wide shot of the finished, cozy space.</p>
+  </div>
+
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>🎯 Campaign Concepts</h2>
+      <p>Larger initiatives that bundle content around strategic themes:</p>
+      
+  <div class="campaign-card">
+    <h4>Campaign: "Neutral Core, Elevated"</h4>
+    <div class="tagline">"The soft basics your room already needs."</div>
+    <p>A campaign centered on the trusted gray, cream, and black solid shag rugs that already anchor the assortment, paired with practical guidance on pile height, washability, and sizing to build confidence in the core catalog.</p>
+    <div class="campaign-details">
+    <div class="campaign-detail">
+      <h5>Content Pillars</h5>
+      <p>Room-specific pile height advice, washable/easy-care education, correct sizing with rug pads</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Format</h5>
+      <p>Blog posts, buying guides, email series</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Competitive Angle</h5>
+      <p>Counters Walmart's high-volume budget dominance (9 of 10 SKUs under $100) by pairing Wayfair's neutral core with stronger care/education content Amazon and Walmart listings don't provide</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Seo Opportunity</h5>
+      <p>Capture searches like 'washable shag rug' and 'what size rug for bedroom' where practical guidance is thin on competitor listings</p>
+    </div>
+  </div>
+  </div>
+  <div class="campaign-card">
+    <h4>Campaign: "Designer Shag Collection Spotlight"</h4>
+    <div class="tagline">"Rugs you won't find anywhere else."</div>
+    <p>A content push highlighting Wayfair's exclusive designer collaborations (Loloi x Angela Rose, Rifle Paper Co., Leanne Ford) as the definitive premium shag option, filling the $200-$400 whitespace where Walmart has no presence and Amazon has only one SKU.</p>
+    <div class="campaign-details">
+    <div class="campaign-detail">
+      <h5>Content Pillars</h5>
+      <p>Designer storytelling, exclusive collaboration features, premium room styling</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Format</h5>
+      <p>Instagram carousels, Pinterest moodboards, dedicated landing page content</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Competitive Angle</h5>
+      <p>Exploits the $200-$400 whitespace (4 SKUs total across all retailers, Walmart at zero) and reinforces the brand-moat only Wayfair holds</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Timing</h5>
+      <p>Evergreen / test-and-learn</p>
+    </div>
+  </div>
+  </div>
+  <div class="campaign-card">
+    <h4>Campaign: "Bold Shag, New Neutrals"</h4>
+    <div class="tagline">"Texture that has a little more to say."</div>
+    <p>A test-and-learn content series exploring the fast-rising, underserved gradient and color-blocked shag aesthetic alongside updated neutral tones like sage, dusty blue, and warm browns, positioned as a future assortment opportunity rather than a current catalog feature.</p>
+    <div class="campaign-details">
+    <div class="campaign-detail">
+      <h5>Content Pillars</h5>
+      <p>Bold gradient styling inspiration, updated neutral palette education, boho/eclectic room pairing</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Format</h5>
+      <p>Pinterest pins, Instagram carousels, TikTok room reveals</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Cross Sell</h5>
+      <p>Pairs naturally with vintage furniture and textured wall content per P2 visual trend findings</p>
+    </div>
+  
+    <div class="campaign-detail">
+      <h5>Micro Segment</h5>
+      <p>Bold Eclectic Gradient Shag—fast-rising on Pinterest/Instagram but currently underserved in assortment</p>
+    </div>
+  </div>
+  </div>
+    </section>
+    
+    <section class="section">
+      <h2>📧 Email Subject Lines</h2>
+      <p>High-performing subject lines based on trend themes. Each connects to specific data points.</p>
+      <div class="email-ideas">
+  <div class="email-subject">
+    <span class="icon">🌿</span>
+    <span class="subject-text">The neutral shag rugs everyone keeps coming back to</span>
+    <span class="open-rate high">Est. High Open</span>
+  </div>
+  <div class="email-subject">
+    <span class="icon">✨</span>
+    <span class="subject-text">Not your average gray rug: exploring bold gradient shag</span>
+    <span class="open-rate high">Est. High Open</span>
+  </div>
+  <div class="email-subject">
+    <span class="icon">🏠</span>
+    <span class="subject-text">Wrong rug size? Here's how to fix it before you buy</span>
+    <span class="open-rate medium">Est. Medium Open</span>
+  </div>
+  <div class="email-subject">
+    <span class="icon">🌊</span>
+    <span class="subject-text">Yes, shag rugs can be washable—here's how</span>
+    <span class="open-rate high">Est. High Open</span>
+  </div>
+  <div class="email-subject">
+    <span class="icon">💡</span>
+    <span class="subject-text">High-pile or medium-pile? What your room actually needs</span>
+    <span class="open-rate high">Est. High Open</span>
+  </div>
+  <div class="email-subject">
+    <span class="icon">🎯</span>
+    <span class="subject-text">Designer shag, without the designer price tag guesswork</span>
+    <span class="open-rate medium">Est. Medium Open</span>
+  </div></div>
+    </section>
+    
+    <section class="section">
+      <h2>⚔️ Competitive Content Angles</h2>
+      <p>Content strategies that directly address gaps identified in competitor analysis:</p>
+      
+  <div class="competitive-angle">
+    <h4>Angle: "Own the $200-$400 Designer Whitespace"</h4>
+    <p><strong>Competitor Gap:</strong> The $200-$400 price band has only 4 SKUs across Wayfair, Amazon, and Walmart combined, and Walmart has zero presence in this range.</p>
+    <p><strong>Wayfair Opportunity:</strong> Build content around Wayfair's exclusive designer collaborations (Loloi x Angela Rose, Rifle Paper Co., Leanne Ford) to establish this band as Wayfair's clear territory before competitors move in.</p>
+  </div>
+
+  <div class="competitive-angle">
+    <h4>Angle: "Rebuild Trust on Underperforming Collaborations"</h4>
+    <p><strong>Competitor Gap:</strong> Several exclusive Loloi collaboration SKUs score below 4.0 stars, while Amazon's Safavieh Hudson (4.7 stars, 578 reviews) and Walmart's Mainstays (4.5 stars, 4,582 reviews) show much deeper social proof.</p>
+    <p><strong>Wayfair Opportunity:</strong> Pair any premium design content with visible customer reviews and styling proof points, and address quality/fit concerns directly in buying guides to protect the premium positioning these collaborations are meant to support.</p>
+  </div>
+
+  <div class="competitive-angle">
+    <h4>Angle: "Fill the Credible Budget Gap"</h4>
+    <p><strong>Competitor Gap:</strong> Wayfair has only 2 of 10 analyzed SKUs priced under $100, versus Amazon's 6 and Walmart's 9, leaving budget-conscious shoppers with little reason to start their search on Wayfair.</p>
+    <p><strong>Wayfair Opportunity:</strong> Use educational content (washable, easy-care, non-shedding features) to make Wayfair's existing entry-level neutral shag options easier to find and trust, without diluting the premium designer story.</p>
+  </div>
+
+    </section>
+    
+    <section class="section">
+      <h2>📅 Recommended Content Priorities</h2>
+      <p>Based on trend momentum and competitive gaps, here's the suggested priority order:</p>
+      
+  <div class="recommendation">
+    <div class="priority high">1</div>
+    <div class="recommendation-content">
+      <h4>Educational content supporting the neutral core</h4>
+      <p>77.7% of observed colors are gray and cream, and 66.7% of patterns are solid—this is where current demand and inventory already align, so practical content (pile height, sizing, washability) will serve the largest share of shoppers immediately.</p>
+    </div>
+  </div>
+  <div class="recommendation">
+    <div class="priority high">2</div>
+    <div class="recommendation-content">
+      <h4>Designer collaboration storytelling for the $200-$400 tier</h4>
+      <p>This price band has only 4 SKUs across all three retailers with Walmart entirely absent, giving Wayfair's exclusive Loloi partnerships a rare, largely uncontested space to build authority in premium shag.</p>
+    </div>
+  </div>
+  <div class="recommendation">
+    <div class="priority medium">3</div>
+    <div class="recommendation-content">
+      <h4>Trust-building content around collaboration quality</h4>
+      <p>Some designer collaboration SKUs score below 4.0 stars while competitor bestsellers show far higher ratings and review volume, making credibility-focused content essential before scaling premium marketing further.</p>
+    </div>
+  </div>
+  <div class="recommendation">
+    <div class="priority medium">4</div>
+    <div class="recommendation-content">
+      <h4>Exploratory content on bold gradient and updated-neutral shag</h4>
+      <p>P2 identifies bold gradient and color-blocked shag as a fast-rising, underserved segment on social platforms; low-cost content testing (moodboards, Pinterest pins) can gauge interest ahead of any assortment decisions.</p>
+    </div>
+  </div>
+    </section>
+    
+    <footer class="footer">
+      <div class="logo">Wayfair | AI Insights & Content Agent</div>
+      <p>Report generated from Market Trend Discovery (P2) and Competitor Monitoring (P3) data</p>
+      <p>Category: Shag Rug | Focus: Neutral Core + Design-Forward Premium | Date: August 11, 2026</p>
+    </footer>
+  </div>
+</body>
+</html>

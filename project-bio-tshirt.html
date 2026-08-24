@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: hsl(220 6% 96%); font-family: 'DM Sans', system-ui, sans-serif; }
+    a { color: hsl(239 84% 67%); text-decoration: none; }
+    a:hover { color: hsl(270 70% 38%); }
+    ::selection { background: hsl(239 84% 67% / 0.2); }
+    @keyframes pageIn { from { opacity: 0; transform: scale(1.012); } to { opacity: 1; transform: scale(1); } }
+    body { animation: pageIn .42s cubic-bezier(.2,.7,.3,1) both; }
+  
+    @media (max-width: 760px) {
+      [style*="grid-template-columns: repeat(3, 1fr)"],
+      [style*="grid-template-columns: repeat(2, minmax(0, 1fr))"],
+      [style*="grid-template-columns: repeat(2, minmax(0px, 1fr))"],
+      [style*="grid-template-columns: minmax(0px, 1fr) 280px"],
+      [style*="grid-template-columns: 1fr 1fr"],
+      [style*="grid-template-columns: 300px minmax(0, 1fr)"],
+      [style*="grid-template-columns: 190px 1fr"],
+      [style*="grid-template-columns: minmax(0, 1fr) 280px"] { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 640px) {
+      [style*="padding: 20px 64px"],
+      [style*="padding: 72px 64px 40px"],
+      [style*="padding: 0 64px 56px"],
+      [style*="padding: 0 64px 100px"],
+      [style*="padding: 32px 64px"] { padding-left: 22px !important; padding-right: 22px !important; }
+      h1 { font-size: clamp(28px, 8.5vw, 42px) !important; }
+    }
+  </style>
+  <script>
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href^="index.html"], a[href^="project-"]');
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      var veil = document.createElement('div');
+      veil.style.cssText = 'position:fixed;inset:0;z-index:9999;background:hsl(220 6% 96%);pointer-events:none;opacity:0;transition:opacity .32s ease;';
+      document.body.appendChild(veil);
+      document.body.style.transition = 'transform .38s cubic-bezier(.65,0,.35,1)';
+      requestAnimationFrame(function () { veil.style.opacity = '1'; document.body.style.transform = 'scale(.985)'; });
+      setTimeout(function () { window.location.href = a.getAttribute('href'); }, 330);
+    });
+  </script>
+</helmet>
+
+<div style="background: hsl(220 6% 96%); color: hsl(240 10% 4%); min-height: 100vh;">
+
+  <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 20px 64px; background: hsl(220 6% 96% / 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid hsl(240 6% 85%);">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.02em;">Kaylee (Li) Wan</div>
+    <a href="index.html#projects" style="font-size: 14px; font-weight: 600; color: hsl(239 84% 67%);">← Back to Projects</a>
+  </nav>
+
+  <header style="padding: 72px 64px 40px; max-width: 900px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">Apparel Design · Berkeley International Office</div>
+    <h1 style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 48px; font-weight: 800; line-height: 1.1; margin: 0 0 20px; letter-spacing: -0.01em;">Orientation Leaders' T-Shirt Design</h1>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <span style="font-size: 12px; padding: 5px 12px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">Canva</span>
+      <span style="font-size: 12px; padding: 5px 12px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">Photoshop</span>
+      <span style="font-size: 12px; padding: 5px 12px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">ChatGPT</span>
+      <span style="font-size: 12px; padding: 5px 12px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">Apparel Design</span>
+    </div>
+  </header>
+
+  <section style="padding: 0 64px 56px; max-width: 900px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">Summary</div>
+    <p style="font-size: 20px; line-height: 1.7; color: hsl(240 5% 24%); margin: 0; text-wrap: pretty;">Three shirt concepts for the Berkeley International Office orientation leader team — the shirt new international students look for when they need help. Each concept pairs a front-side "LEADER" identifier with a back-side welcome graphic, built on Berkeley blue and gold and the idea of arriving somewhere new.</p>
+  </section>
+
+  <section style="padding: 0 64px 56px; max-width: 1100px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 24px;">Concepts</div>
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+      <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; overflow: hidden;">
+        <img src="./assets/tshirt-blue.png" alt="Berkeley blue t-shirt concept" style="width: 100%; display: block;">
+        <div style="padding: 20px 26px 24px;">
+          <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 19px; font-weight: 700; margin-bottom: 6px;">01 · Campanile &amp; Flight Path</div>
+          <p style="font-size: 15px; line-height: 1.65; color: hsl(240 5% 38%); margin: 0; text-wrap: pretty;">Berkeley blue with the Campanile and a plane tracing its arc toward campus — the arrival every international student makes. The "Let There Be Light" banner ties the university motto into the journey.</p>
+        </div>
+      </div>
+      <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; overflow: hidden;">
+        <img src="./assets/tshirt-cream.png" alt="Cream t-shirt concept" style="width: 100%; display: block;">
+        <div style="padding: 20px 26px 24px;">
+          <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 19px; font-weight: 700; margin-bottom: 6px;">02 · Ask Me Anything</div>
+          <p style="font-size: 15px; line-height: 1.65; color: hsl(240 5% 38%); margin: 0; text-wrap: pretty;">Oski making a heart, with "Ask Me Anything ^" pointing up at him — turning the shirt into an invitation rather than a label. The back carries a globe and "welcome" in the languages our incoming class actually speaks.</p>
+        </div>
+      </div>
+      <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; overflow: hidden;">
+        <img src="./assets/tshirt-gold.png" alt="California gold t-shirt concept" style="width: 100%; display: block;">
+        <div style="padding: 20px 26px 24px;">
+          <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 19px; font-weight: 700; margin-bottom: 6px;">03 · Speech Bubbles</div>
+          <p style="font-size: 15px; line-height: 1.65; color: hsl(240 5% 38%); margin: 0; text-wrap: pretty;">California gold with the university seal on the front, and a cluster of speech bubbles on the back — every "welcome" in a different color and shape, so the crowd reads as many voices rather than one message repeated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 0 64px 56px; max-width: 900px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">How I Made It</div>
+    <ul style="margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.7; color: hsl(240 5% 24%); display: flex; flex-direction: column; gap: 10px;">
+      <li>Started from the brief's real constraint: the shirt has to be recognizable across a crowded plaza, and readable to someone whose first language isn't English.</li>
+      <li>Used ChatGPT to draft and pressure-test concept directions, then built each layout in Canva and refined type, color, and artwork in Photoshop.</li>
+      <li>Locked every concept to the Berkeley blue and gold palette so all three read as one team, and mocked them up on shirt templates for the team vote.</li>
+    </ul>
+  </section>
+
+  <section style="padding: 0 64px 100px; max-width: 900px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">What I Learned</div>
+    <p style="font-size: 16px; line-height: 1.7; color: hsl(240 5% 24%); margin: 0 0 16px; text-wrap: pretty;">Designing for a team is a stakeholder problem before it's a visual one — the shirt has to work for the leaders wearing it and the students reading it. Presenting three distinct directions instead of one polished favorite made the decision easier and the feedback more specific.</p>
+    <div style="padding-top: 28px; border-top: 1px solid hsl(240 6% 85%);">
+      <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: hsl(240 5% 45%); margin-bottom: 20px;">Keep reading</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+        <a href="index.html#projects" style="display: flex; flex-direction: column; gap: 6px; padding: 26px 28px; border: 1px solid hsl(240 6% 85%); border-radius: 14px; background: hsl(0 0% 100%); text-decoration: none; transition: .22s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 14px 34px hsl(239 40% 30% / 0.10); border-color: hsl(239 84% 67%);">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(240 5% 45%);">← All projects</span>
+          <span style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700; color: hsl(240 10% 4%); line-height: 1.3;">Back to the full portfolio</span>
+          <span style="font-size: 14px; color: hsl(240 5% 45%);">Illustration &amp; design, plus a separate group of data &amp; AI work</span>
+        </a>
+        <a href="project-crn-poster.html" style="display: flex; flex-direction: column; gap: 6px; padding: 26px 28px; border: 1px solid hsl(239 84% 67%); border-radius: 14px; background: hsl(239 84% 97%); text-decoration: none; transition: .22s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 14px 34px hsl(239 40% 30% / 0.10); border-color: hsl(239 84% 67%);">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%);">Next project →</span>
+          <span style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700; color: hsl(240 10% 4%); line-height: 1.3;">Pride Month Event Poster</span>
+          <span style="font-size: 14px; color: hsl(240 5% 45%);">Chinese Rainbow Network · a bilingual poster for a June meetup</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding: 32px 64px; text-align: center; font-size: 13px; color: hsl(240 5% 45%); border-top: 1px solid hsl(240 6% 85%);">© 2026 Kaylee Wan · Built with Claude Design</footer>
+
+</div>
+</x-dc>
+</body>
+</html>

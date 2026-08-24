@@ -3,283 +3,551 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kaylee (Li) Wan — Portfolio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    body { margin: 0; background: oklch(0.98 0.004 90); font-family: 'Inter', sans-serif; }
-    a { color: oklch(0.5 0.13 55); text-decoration: none; }
-    a:hover { color: oklch(0.42 0.13 55); }
-    ::selection { background: oklch(0.5 0.13 55 / 0.2); }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-  @media (max-width: 768px) {
-    nav { padding: 14px 20px !important; }
-    nav > div:last-child { gap: 14px !important; flex-wrap: wrap; }
-
-    #hero {
-      grid-template-columns: 1fr !important;
-      padding: 36px 20px 48px !important;
-      min-height: auto !important;
-      gap: 28px !important;
-    }
-    #hero > img { width: 180px !important; height: 180px !important; justify-self: center; }
-    #hero h1 { font-size: 34px !important; }
-    #hero p { font-size: 16px !important; max-width: 100% !important; }
-    #hero > div > div:last-child { flex-direction: column !important; gap: 10px !important; }
-    #hero > div > div:last-child > a { padding: 13px 20px !important; font-size: 15px !important; justify-content: center; }
-
-    #about { padding: 28px 20px !important; }
-    [style*="grid-template-columns: 180px 1fr"] { grid-template-columns: 1fr !important; gap: 6px !important; }
-
-    #projects { padding: 0 20px 56px !important; }
-    #projects h2 { font-size: 26px !important; margin-bottom: 24px !important; }
-    [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
-
-    #experience { padding: 56px 20px !important; }
-    [style*="grid-template-columns: 200px 1fr"] { grid-template-columns: 1fr !important; gap: 4px !important; }
-
-    #resume { padding: 56px 20px !important; max-width: 100% !important; box-sizing: border-box; }
-    #resume h2 { font-size: 26px !important; }
-    [style*="width: 841px"] { width: 100% !important; height: 320px !important; box-sizing: border-box; }
-    #resumeBox { width: 100% !important; }
-
-    #contact { padding: 60px 20px !important; }
-    #contact h2 { font-size: 28px !important; }
-
-    footer { padding: 24px 20px !important; }
-  }
-  </style>
+<script src="./support.js"></script>
 </head>
 <body>
-<div style="background: oklch(0.98 0.004 90); color: oklch(0.22 0.006 260); min-height: 100vh;">
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: hsl(220 6% 96%); font-family: 'DM Sans', system-ui, sans-serif; }
+    a { color: hsl(239 84% 67%); text-decoration: none; }
+    a:hover { color: hsl(270 70% 38%); }
+    ::selection { background: hsl(239 84% 67% / 0.2); }
+    @keyframes pageIn { from { opacity: 0; transform: scale(1.008); } to { opacity: 1; transform: scale(1); } }
+    body { animation: pageIn .4s cubic-bezier(.2,.7,.3,1) both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes flow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    @keyframes blink { 0%, 45% { opacity: 1; } 50%, 95% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes drift1 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(60px, -40px) scale(1.15); } 66% { transform: translate(-30px, 30px) scale(0.92); } }
+    @keyframes drift2 { 0%, 100% { transform: translate(0, 0) scale(1.05); } 40% { transform: translate(-70px, 40px) scale(0.9); } 75% { transform: translate(40px, 50px) scale(1.2); } }
+    @property --beam-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    @keyframes beam-spin { 0% { --beam-angle: 0deg; } 100% { --beam-angle: 360deg; } }
+    @keyframes heal-float { 0% { opacity: 0; transform: translateY(0) scale(0.6); } 12% { opacity: 0.25; } 40% { opacity: 0.15; } 100% { opacity: 0; transform: translateY(-65px) scale(0.2); } }
+    .beam-pill::before {
+      content: ''; position: absolute; inset: -1px -10px -1px -10px; border-radius: 9999px; padding: 2px;
+      background: conic-gradient(from var(--beam-angle), transparent 0%, transparent 82%, rgba(74,222,128,0.05) 86%, rgba(74,222,128,0.15) 89%, rgba(74,222,128,0.35) 92%, rgba(74,222,128,0.6) 95%, rgba(74,222,128,0.9) 98%, #4ade80 100%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      animation: beam-spin 2s linear infinite;
+    }
+    @keyframes drift3 { 0%, 100% { transform: translate(0, 0) scale(0.95); } 50% { transform: translate(50px, 60px) scale(1.25); } }
+    @keyframes railScan { 0% { background-position: 0 170%; } 100% { background-position: 0 -70%; } }
+    @keyframes dotPulse { 0%, 100% { box-shadow: 0 0 0 0 hsl(239 84% 67% / 0.45); } 55% { box-shadow: 0 0 0 7px hsl(239 84% 67% / 0); } }
+  
+    @media (max-width: 760px) {
+      [style*="grid-template-columns: repeat(3, 1fr)"],
+      [style*="grid-template-columns: repeat(2, minmax(0, 1fr))"],
+      [style*="grid-template-columns: repeat(2, minmax(0px, 1fr))"],
+      [style*="grid-template-columns: minmax(0px, 1fr) 280px"],
+      [style*="grid-template-columns: 1fr 1fr"],
+      [style*="grid-template-columns: 300px minmax(0, 1fr)"],
+      [style*="grid-template-columns: 190px 1fr"],
+      [style*="grid-template-columns: minmax(0, 1fr) 280px"] { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 640px) {
+      [style*="padding: 20px 64px"],
+      [style*="padding: 86px 64px 94px"],
+      [style*="padding: 40px 64px 40px"],
+      [style*="padding: 0px 64px 100px"],
+      [style*="padding: 100px 64px"],
+      [style*="padding: 120px 64px"],
+      [style*="padding: 32px 64px"] { padding-left: 22px !important; padding-right: 22px !important; }
+      h1 { font-size: clamp(28px, 8.5vw, 42px) !important; }
+    }
+  
+    @media (max-width: 640px) {
+      [style*="display: flex; gap: 36px; font-size: 14px"] { display: none !important; }
+      [style*="filter: blur(90px)"], [style*="filter: blur(100px)"], [style*="filter: blur(95px)"] { display: none !important; }
+      [style*="white-space: nowrap"] { white-space: normal !important; }
+    }
+  </style>
+</helmet>
 
-  <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 20px 64px; background: oklch(0.98 0.005 240 / 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid oklch(0 0 0 / 0.08);">
-    <div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.02em;">Kaylee (Li) Wan</div>
-    
+<div style="background: hsl(220 6% 96%); color: hsl(240 10% 4%); min-height: 100vh;">
+
+  <!-- NAV -->
+  <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 20px 64px; background: hsl(220 6% 96% / 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid hsl(240 6% 85%);">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.02em;">Kaylee (Li) Wan</div>
     <div style="display: flex; gap: 36px; font-size: 14px; font-weight: 500;">
-      <a href="#about" style="color: oklch(0.35 0.006 260)">About</a>
-      <a href="#projects" style="color: oklch(0.35 0.006 260)">Projects</a>
-      <a href="#experience" style="color: oklch(0.35 0.006 260)">Experience</a>
-      <a href="#resume" style="color: oklch(0.35 0.006 260)">Resume</a>
-      <a href="#contact" style="color: oklch(0.35 0.006 260)">Contact</a>
+      <a href="#about" style="color: hsl(240 5% 28%)">About</a>
+      <a href="#projects" style="color: hsl(240 5% 28%)">Projects</a>
+      <a href="#experience" style="color: hsl(240 5% 28%)">Experience</a>
+      <a href="#contact" style="color: hsl(240 5% 28%)">Contact</a>
     </div>
   </nav>
-  <section id="hero" style="min-height: 68vh; display: grid; grid-template-columns: 1.3fr 380px; align-items: center; gap: 48px; padding: 0 64px; max-width: 1200px; margin: 0 auto;">
+
+  <!-- HERO -->
+  
+
+  <!-- ABOUT -->
+  <div style="position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background-image: radial-gradient(circle, hsl(240 5% 35% / 0.25) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none;"></div>
+    {{ gridSnakes }}
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 45%, oklch(0.98 0.004 90 / 0.92) 0%, oklch(0.98 0.004 90 / 0.55) 45%, transparent 80%); pointer-events: none;"></div>
+    <div style="position: absolute; top: -120px; left: 4%; width: 460px; height: 460px; border-radius: 50%; background: hsl(239 84% 67% / 0.15); filter: blur(90px); animation: drift1 22s ease-in-out infinite; pointer-events: none;"></div>
+    <div style="position: absolute; bottom: -160px; left: 34%; width: 520px; height: 420px; border-radius: 50%; background: hsl(270 70% 38% / 0.12); filter: blur(100px); animation: drift2 28s ease-in-out infinite; pointer-events: none;"></div>
+    <div style="position: absolute; top: 10%; right: -80px; width: 420px; height: 420px; border-radius: 50%; background: hsl(187 86% 53% / 0.14); filter: blur(95px); animation: drift3 25s ease-in-out infinite; pointer-events: none;"></div>
+  <section id="hero" style="position: relative; display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: center; gap: 80px; padding: 86px 64px 94px; max-width: 1080px; margin: 0 auto;">
+    <div style="position: relative; width: 300px; height: 300px; justify-self: center; animation: fadeUp 0.6s ease both;">
+      <div style="position: absolute; inset: -18px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53% / 0.35), hsl(270 91% 65% / 0.3)); filter: blur(2px);"></div>
+      <div style="position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53%), hsl(270 91% 65%));"></div>
+      <image-slot id="headshot" style="position: absolute; inset: 0; width: 300px; height: 300px;" shape="circle" placeholder="Drop headshot"></image-slot>
+    </div>
     <div>
-      <div style="font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 20px; animation: fadeUp 0.6s ease both;">Business Analyst · Operations · AI &amp; Automation</div>
-      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; animation: fadeUp 0.6s ease 0.1s both;">
-        <h1 style="font-family: 'Manrope', sans-serif; font-size: 55px; font-weight: 800; line-height: 1.05; margin: 0; letter-spacing: -0.02em">Hi, I'm Kaylee</h1><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; color: oklch(0.4 0.1 150); background: oklch(0.94 0.03 150); border: 1px solid oklch(0.8 0.06 150); border-radius: 20px; padding: 8px 16px; align-self: flex-start; margin-top: 2px;">🟢 Open to Work</span>
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px; animation: fadeUp 0.6s ease both;">
+        <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 20px; font-weight: 600; color: hsl(240 5% 28%);">Hi, I'm <span style="background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; font-weight: 700;">@Kaylee</span>,</div>
       </div>
-      <p style="font-size: 22px; line-height: 1.55; color: oklch(0.4 0.006 260); max-width: 680px; margin: 0 0 40px; animation: fadeUp 0.6s ease 0.2s both;">I turn messy data into decisions — building ETL pipelines, dashboards, and AI agents that give teams clarity to move faster and make better decisions.</p>
-      <div style="display: flex; gap: 16px; animation: fadeUp 0.6s ease 0.3s both;">
-        <a href="#projects" style="display: inline-flex; align-items: center; padding: 18px 36px; background: oklch(0.5 0.13 55); color: oklch(1 0 0); font-weight: 600; font-size: 18px; border-radius: 6px">View Projects</a>
-        <a href="#resume" style="display: inline-flex; align-items: center; padding: 18px 36px; border: 1px solid oklch(0 0 0 / 0.15); color: oklch(0.22 0.006 260); font-weight: 600; font-size: 18px; border-radius: 6px">Resume</a>
-        <a href="#contact" style="display: inline-flex; align-items: center; padding: 18px 36px; border: 1px solid oklch(0 0 0 / 0.15); color: oklch(0.22 0.006 260); font-weight: 600; font-size: 18px; border-radius: 6px">Get in Touch</a>
-      </div>
-    </div>
-    <img src="assets/headshot.webp" alt="Kaylee Wan" style="width: 340px; height: 340px; border-radius: 20px; object-fit: cover;">
-  </section>
-
-  <section id="about" style="padding: 40px 64px 40px; max-width: 1200px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">About</div>
-    <div style="display: flex; flex-direction: column; gap: 40px;">
-      <p style="font-size: 20px; line-height: 1.7; color: oklch(0.32 0.006 260); margin: 0;">UC Berkeley Data Science graduate (GPA: 3.83) with expertise in Excel, SQL, Python, ETL pipelines, and AI workflow automation. Designed and shipped AI agents, dashboards, and statistical analysis pipelines that transformed raw data into executive-ready insights across healthcare, e-commerce, and research. Track record of leading cross-functional collaboration, operational transformation, and delivering measurable business impact.</p>
-      <div style="display: flex; flex-direction: column; gap: 20px; background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 12px; padding: 28px;">
-        <div style="display: grid; grid-template-columns: 180px 1fr; gap: 24px;">
-          <div style="font-size: 13px; color: oklch(0.55 0.006 260);">Education</div>
-          <div>
-            <div style="font-size: 16px; font-weight: 600;">UC Berkeley — B.A. Data Science</div>
-            <div style="font-size: 14px; color: oklch(0.45 0.006 260);">Business Analytics focus · GPA 3.83/4.0 · Dec 2025</div>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding-top: 20px; border-top: 1px solid oklch(0 0 0 / 0.08);">
-          <div style="font-size: 13px; color: oklch(0.55 0.006 260);">Recognition</div>
-          <div style="font-size: 14px; color: oklch(0.32 0.006 260); line-height: 1.5;">Jack Kent Cooke Scholar (Top 6.5% Nationwide) · Western Union Global Scholar (Top 40 Globally)</div>
-        </div>
-        <div style="display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding-top: 20px; border-top: 1px solid oklch(0 0 0 / 0.08);">
-          <div style="font-size: 13px; color: oklch(0.55 0.006 260);">Languages</div>
-          <div style="font-size: 14px; color: oklch(0.32 0.006 260); line-height: 1.5;">Mandarin Chinese, English</div>
-        </div>
-        <div style="display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding-top: 20px; border-top: 1px solid oklch(0 0 0 / 0.08);">
-          <div style="font-size: 13px; color: oklch(0.55 0.006 260);">Interests</div>
-          <div style="font-size: 14px; color: oklch(0.32 0.006 260); line-height: 1.5;">Design &amp; Sketching, Virtual Reality (VR) Games, Photography, Mentoring, Learning New Tools</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects" style="padding: 0px 64px 100px; max-width: 1200px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Projects</div>
-    <h2 style="font-family: 'Manrope', sans-serif; font-size: 40px; font-weight: 800; margin: 0 0 56px; letter-spacing: -0.01em;">Selected work</h2>
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
-      <a href="project-breaking-games.html" style="display: flex; flex-direction: column; background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px oklch(0 0 0 / 0.04); color: inherit;">
-        <div style="position: relative;">
-          <img src="assets/project-breaking-games.webp" alt="" style="width: 100%; height: 200px; object-fit: cover; display: block;">
-          <img src="assets/breaking-games-logo.webp" style="position: absolute; left: 16px; bottom: -2px; height: 64px; width: auto; pointer-events: none;" alt="">
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; padding: 24px;">
-          <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.5 0.13 55);">Data Analysis</div>
-          <div style="font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 700;">SQL &amp; Database Architecture</div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260);">Breaking Games (via Extern)</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Database Design</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">SQL</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Business Intelligence</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">E-Commerce Analytics</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Marketing Attribution</span>
-          </div>
-        </div>
-      </a>
-      <a href="project-wayfair.html" style="display: flex; flex-direction: column; background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px oklch(0 0 0 / 0.04); color: inherit;">
-        <div style="position: relative;">
-          <img src="assets/project-wayfair.png" alt="" style="width: 100%; height: 200px; object-fit: cover; display: block;">
-          <img src="assets/wayfair-logo.png" style="position: absolute; left: 16px; bottom: -2px; height: 64px; width: auto; pointer-events: none;" alt="">
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; padding: 24px;">
-          <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.5 0.13 55);">AI &amp; Automation</div>
-          <div style="font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 700;">AI Agents for Market Intelligence</div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260);">Wayfair (via Extern)</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">n8n</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">OpenAI</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Claude</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Gemini</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">AI Agent Development</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Dashboard Design</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Trend Analysis</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Prompt Engineering</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Competitor Product Benchmarking</span>
-          </div>
-        </div>
-      </a>
-      <a href="project-amazon.html" style="display: flex; flex-direction: column; background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px oklch(0 0 0 / 0.04); color: inherit;">
-        <div style="position: relative;">
-          <img src="assets/project-amazon.webp" alt="" style="width: 100%; height: 200px; object-fit: cover; display: block;">
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; padding: 24px;">
-          <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.5 0.13 55);">Operations Analytics</div>
-          <div style="font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 700;">People Analytics &amp; Attrition Root-Cause</div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260);">Amazon Fulfillment Center (via Extern)</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Sentiment Analysis</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">People Operations</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">HR Strategy</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Python Scraping</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Workforce Data Analysis</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Python</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Excel</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Claude AI</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">Root Cause Analysis</span>
-            <span style="font-size: 12px; padding: 5px 10px; background: oklch(0.95 0.006 90); border-radius: 5px; color: oklch(0.45 0.006 260);">ETL</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <section id="experience" style="padding: 100px 64px; background: oklch(0.95 0.006 90); border-top: 1px solid oklch(0 0 0 / 0.06); border-bottom: 1px solid oklch(0 0 0 / 0.06);">
-    <div style="max-width: 900px; margin: 0 auto;">
-      <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 40px;">Experience</div>
-      <div style="position: relative;">
-        <div style="position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: oklch(0.85 0.02 90);"></div>
+      <h1 style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: clamp(30px, 4.2vw, 56px); font-weight: 800; line-height: 1.08; margin: 0 0 20px; letter-spacing: -0.025em; animation: fadeUp 0.6s ease 0.1s both;">
+        <span style="display: block; white-space: nowrap; min-height: 1.08em;"><span style="background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%), hsl(187 86% 53%)); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: flow 7s linear infinite;">{{ typed }}</span><span style="display: inline-block; width: 3px; height: 0.85em; vertical-align: -0.08em; margin-left: 4px; background: hsl(239 84% 67%); animation: blink 1s step-end infinite;"></span></span>
+        <span class="beam-pill" style="position: relative; display: inline-block; color: hsl(240 10% 4%);"><span style="position: relative; z-index: 10; display: block; white-space: nowrap;">who turns messy data<br>into decisions</span>{{ healParticles }}</span>
+      </h1>
+      <p style="font-size: 21px; line-height: 1.55; color: hsl(240 5% 28%); max-width: 720px; margin: 0 0 36px; animation: fadeUp 0.6s ease 0.2s both;">Building ETL pipelines, dashboards, and AI agents that give teams the clarity to move faster and make better decisions.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; animation: fadeUp 0.6s ease 0.3s both;">
+        <a href="#projects" style="display: inline-flex; align-items: center; gap: 10px; padding: 18px 36px; white-space: nowrap; background: hsl(239 84% 67%); color: hsl(0 0% 100%); font-weight: 600; font-size: 18px; border-radius: 6px; box-shadow: 0 2px 6px hsl(239 84% 67% / 0.25); transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.18s ease, background 0.18s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 12px 26px hsl(239 84% 67% / 0.42); background: hsl(239 84% 62%);" style-active="transform: translateY(0) scale(0.97); box-shadow: 0 2px 6px hsl(239 84% 67% / 0.3);">View Projects <span style="font-size: 15px;">↓</span></a>
+        <a href="https://public.tableau.com/app/profile/liwan/vizzes" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; padding: 18px 36px; white-space: nowrap; border: 1px solid hsl(240 6% 78%); background: hsl(0 0% 100% / 0); color: hsl(240 10% 4%); font-weight: 600; font-size: 18px; border-radius: 6px; transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.18s ease, background 0.18s ease, color 0.18s ease;" style-hover="transform: translateY(-3px); border-color: hsl(239 84% 67%); background: hsl(239 84% 67% / 0.08); color: hsl(239 84% 55%);" style-active="transform: translateY(0) scale(0.97);"><svg width="19" height="19" viewBox="0 0 24 24" style="margin-right: 10px;"><rect x="7.50" y="10.70" width="9" height="2.6" fill="#E8762D"></rect><rect x="10.70" y="7.50" width="2.6" height="9" fill="#E8762D"></rect><rect x="3.90" y="6.00" width="6" height="1.8" fill="#E8762D"></rect><rect x="6.00" y="3.90" width="1.8" height="6" fill="#E8762D"></rect><rect x="14.10" y="6.00" width="6" height="1.8" fill="#5B879B"></rect><rect x="16.20" y="3.90" width="1.8" height="6" fill="#5B879B"></rect><rect x="3.90" y="16.20" width="6" height="1.8" fill="#C72035"></rect><rect x="6.00" y="14.10" width="1.8" height="6" fill="#C72035"></rect><rect x="14.10" y="16.20" width="6" height="1.8" fill="#1F447E"></rect><rect x="16.20" y="14.10" width="1.8" height="6" fill="#1F447E"></rect><rect x="10.00" y="2.30" width="4" height="1.2" fill="#7099A6"></rect><rect x="11.40" y="0.90" width="1.2" height="4" fill="#7099A6"></rect><rect x="0.90" y="11.40" width="4" height="1.2" fill="#7099A6"></rect><rect x="2.30" y="10.00" width="1.2" height="4" fill="#7099A6"></rect><rect x="19.10" y="11.40" width="4" height="1.2" fill="#5C6692"></rect><rect x="20.50" y="10.00" width="1.2" height="4" fill="#5C6692"></rect><rect x="10.00" y="20.50" width="4" height="1.2" fill="#5C6692"></rect><rect x="11.40" y="19.10" width="1.2" height="4" fill="#5C6692"></rect></svg>Tableau Public</a><a href="#contact" style="display: inline-flex; align-items: center; padding: 18px 36px; white-space: nowrap; border: 1px solid hsl(240 6% 78%); background: hsl(0 0% 100% / 0); color: hsl(240 10% 4%); font-weight: 600; font-size: 18px; border-radius: 6px; transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.18s ease, background 0.18s ease, color 0.18s ease;" style-hover="transform: translateY(-3px); border-color: hsl(239 84% 67%); background: hsl(239 84% 67% / 0.08); color: hsl(239 84% 55%);" style-active="transform: translateY(0) scale(0.97);">Get in Touch</a>
         
-        <div style="position: relative; display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding-bottom: 40px; padding-left: 28px;">
-          <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: oklch(0.98 0.004 90); border: 3px solid oklch(0.5 0.13 55);"></div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260); padding-top: 1px;">Oct 2025 – Present</div>
-          <div>
-            <div style="font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px;">Research Data Analyst</div>
-            <div style="font-size: 14px; color: oklch(0.5 0.13 55);">UCSF, Neuroscape Research Lab</div>
+      </div>
+    </div>
+  </section>
+  </div><section id="about" style="padding: 40px 64px 40px; max-width: 1200px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">About</div>
+    <div style="display: flex; flex-direction: column; gap: 36px;">
+      <p style="font-size: 20px; line-height: 1.7; color: hsl(240 5% 24%); margin: 0;">UC Berkeley Data Science graduate (GPA: 3.83) with expertise in Excel, SQL, Python, Tableau, ETL pipelines, and AI workflow automation. Designed AI agents, dashboards, and statistical analysis pipelines that transformed raw data into executive-ready insights across e-commerce, workforce operations, and clinical research. Track record of leading cross-functional collaboration, operational transformation, and delivering measurable business impact.</p>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; padding: 26px 24px; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 28px hsl(239 84% 67% / 0.12); border-color: hsl(239 84% 67% / 0.4);">
+          <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">3.83<span style="-webkit-text-fill-color: hsl(240 5% 45%); color: hsl(240 5% 45%); font-size: 22px; font-weight: 700; letter-spacing: 0;">/4.0</span></div>
+          <div style="font-size: 14px; font-weight: 600; margin-top: 10px;">GPA</div>
+          <div style="font-size: 13px; color: hsl(240 5% 45%); margin-top: 3px;">UC Berkeley, B.A. Data Science</div>
+        </div>
+        <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; padding: 26px 24px; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 28px hsl(239 84% 67% / 0.12); border-color: hsl(239 84% 67% / 0.4);">
+          <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">Top 6.5%<span style="-webkit-text-fill-color: hsl(240 5% 45%); color: hsl(240 5% 45%); font-size: 15px; font-weight: 600; letter-spacing: 0; margin-left: 8px;">Nationwide</span></div>
+          <div style="font-size: 14px; font-weight: 600; margin-top: 10px;">Jack Kent Cooke Scholar</div>
+          <div style="font-size: 13px; color: hsl(240 5% 45%); margin-top: 3px;">$137K award</div>
+        </div>
+        <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; padding: 26px 24px; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 28px hsl(239 84% 67% / 0.12); border-color: hsl(239 84% 67% / 0.4);">
+          <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">Top 40<span style="-webkit-text-fill-color: hsl(240 5% 45%); color: hsl(240 5% 45%); font-size: 15px; font-weight: 600; letter-spacing: 0; margin-left: 8px;">Globally</span></div>
+          <div style="font-size: 14px; font-weight: 600; margin-top: 10px;">Western Union Global Scholar</div>
+          <div style="font-size: 13px; color: hsl(240 5% 45%); margin-top: 3px;">$10K award</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); align-items: stretch; gap: 20px;">
+        <div style="background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; padding: 24px;">
+          <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: hsl(240 5% 45%); margin-bottom: 14px;">Languages</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span style="font-size: 13px; padding: 7px 14px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">Mandarin Chinese</span>
+            <span style="font-size: 13px; padding: 7px 14px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">English</span>
           </div>
         </div>
-        <div style="position: relative; display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding-bottom: 40px; padding-left: 28px;">
-          <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: oklch(0.98 0.004 90); border: 3px solid oklch(0.5 0.13 55);"></div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260); padding-top: 1px;">Aug 2024 – Jul 2026</div>
-          <div>
-            <div style="font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px;">Lead Orientation Leader</div>
-            <div style="font-size: 14px; color: oklch(0.5 0.13 55);">UC Berkeley, Berkeley International Office</div>
+        <div style="grid-column: span 2; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; padding: 24px;">
+          <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: hsl(240 5% 45%); margin-bottom: 14px;">Outside of work</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span style="font-size: 13px; padding: 7px 14px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">Design &amp; Sketching</span>
+            <span style="font-size: 13px; padding: 7px 14px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">VR Games</span>
+            <span style="font-size: 13px; padding: 7px 14px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">AI Animated Shorts</span>
+            <span style="font-size: 13px; padding: 7px 14px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">Learning New Tools</span>
           </div>
         </div>
-        <div style="position: relative; display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding-bottom: 40px; padding-left: 28px;">
-          <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: oklch(0.98 0.004 90); border: 3px solid oklch(0.5 0.13 55);"></div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260); padding-top: 1px;">Jul 2026 – Aug 2026</div>
-          <div>
-            <div style="font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px;">AI Agent & Automation Extern</div>
-            <div style="font-size: 14px; color: oklch(0.5 0.13 55);">Wayfair (via Extern)</div>
-          </div>
-        </div>
-        <div style="position: relative; display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding-bottom: 40px; padding-left: 28px;">
-          <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: oklch(0.98 0.004 90); border: 3px solid oklch(0.5 0.13 55);"></div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260); padding-top: 1px;">May 2026 – Jul 2026</div>
-          <div>
-            <div style="font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px;">Operational Strategy & People Analytics Extern</div>
-            <div style="font-size: 14px; color: oklch(0.5 0.13 55);">Amazon Fulfillment Center (via Extern)</div>
-          </div>
-        </div>
-        <div style="position: relative; display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding-bottom: 40px; padding-left: 28px;">
-          <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: oklch(0.98 0.004 90); border: 3px solid oklch(0.5 0.13 55);"></div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260); padding-top: 1px;">Sep 2025 – Dec 2025</div>
-          <div>
-            <div style="font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px;">Data Analyst Intern</div>
-            <div style="font-size: 14px; color: oklch(0.5 0.13 55);">Appa Health</div>
-          </div>
-        </div>
-        <div style="position: relative; display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding-bottom: 40px; padding-left: 28px;">
-          <div style="position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: oklch(0.98 0.004 90); border: 3px solid oklch(0.5 0.13 55);"></div>
-          <div style="font-size: 13px; color: oklch(0.5 0.006 260); padding-top: 1px;">Oct 2021 – May 2023</div>
-          <div>
-            <div style="font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 2px;">Scheduling & Front Desk Operations Staff</div>
-            <div style="font-size: 14px; color: oklch(0.5 0.13 55);">Berkeley City College Learning Resource Center</div>
-          </div>
-        </div>
+      </div>
       </div>
     </div>
   </section>
 
-  <section id="resume" style="padding: 100px 64px; max-width: 900px; margin: 0 auto;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Resume</div>
-    <h2 style="font-family: 'Manrope', sans-serif; font-size: 40px; font-weight: 800; margin: 0 0 32px; letter-spacing: -0.01em;">Resume</h2>
-    <div style="display: flex; align-items: center; justify-content: space-between; background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 12px 12px 0 0; padding: 12px 20px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <button id="zoomOutBtn" style="width: 32px; height: 32px; border-radius: 6px; border: 1px solid oklch(0 0 0 / 0.15); background: oklch(0.98 0.004 90); font-size: 16px; font-weight: 700; cursor: pointer;">−</button>
-        <span id="zoomLabel" style="font-size: 13px; color: oklch(0.4 0.006 260); min-width: 42px; text-align: center;">140%</span>
-        <button id="zoomInBtn" style="width: 32px; height: 32px; border-radius: 6px; border: 1px solid oklch(0 0 0 / 0.15); background: oklch(0.98 0.004 90); font-size: 16px; font-weight: 700; cursor: pointer;">+</button>
+  <!-- PROJECTS -->
+  <section id="projects" style="padding: 0px 64px 100px; max-width: 1200px; margin: 0 auto;">
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">Projects</div>
+    <h2 style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 40px; font-weight: 800; margin: 0 0 56px; letter-spacing: -0.01em;">Selected <span style="background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">work</span></h2>
+    <sc-if value="{{ showFilters }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: -34px 0 34px;">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+          <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+        </sc-for>
       </div>
-      <a href="assets/resume.pdf" download="Kaylee-Wan-Resume.pdf" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; background: oklch(0.5 0.13 55); color: oklch(0.98 0.004 90); font-weight: 600; font-size: 14px; border-radius: 6px; border: none; cursor: pointer; text-decoration: none;">⬇ Download</a>
+    </sc-if>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+      <sc-for list="{{ projects }}" as="proj" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px hsl(240 6% 85% / 0.5); color: inherit; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 28px hsl(239 84% 67% / 0.14); border-color: hsl(239 84% 67% / 0.4);">
+          <div style="position: relative;">
+            <image-slot id="{{ proj.slotId }}" src="{{ proj.image }}" style="width: 100%; height: 230px;" shape="rect" placeholder="{{ proj.placeholder }}"></image-slot>
+            {{ proj.logoEl }}
+          </div>
+          <a href="{{ proj.page }}" onClick="{{ proj.onNav }}" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; color: inherit;">
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsl(239 84% 67%);">{{ proj.category }}</div>
+            <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700; line-height: 1.3;">{{ proj.title }}</div>
+            <div style="font-size: 13px; color: hsl(240 5% 45%);">{{ proj.org }}</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
+              <sc-for list="{{ proj.tags }}" as="tag" hint-placeholder-count="3">
+                <span style="font-size: 12px; padding: 5px 12px; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 9999px; color: hsl(240 5% 28%); font-weight: 500;">{{ tag }}</span>
+              </sc-for>
+            </div>
+          </a>
+        </div>
+      </sc-for>
     </div>
-    <div style="background: oklch(0.95 0.006 90); border: 1px solid oklch(0 0 0 / 0.08); border-top: none; border-radius: 0 0 12px 12px; padding: 32px; overflow: auto; max-height: 720px; display: flex; justify-content: center; align-items: flex-start; width: 841px; height: 792px">
-      <div id="resumeBox" style="width: 840px; flex-shrink: 0; transition: width 0.15s ease; aspect-ratio: 8.5 / 11; background: oklch(1 0 0); box-shadow: 0 1px 6px oklch(0 0 0 / 0.1);">
-        <img src="assets/resume-preview.png" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="Resume">
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" style="position: relative; overflow: hidden; padding: 100px 64px; background: hsl(220 6% 93%); border-top: 1px solid hsl(240 6% 85%); border-bottom: 1px solid hsl(240 6% 85%);">
+    <div style="position: absolute; top: 8%; left: -140px; width: 520px; height: 520px; border-radius: 50%; background: hsl(239 84% 67% / 0.13); filter: blur(110px); animation: drift1 26s ease-in-out infinite; pointer-events: none;"></div>
+    <div style="position: absolute; bottom: -120px; right: -100px; width: 480px; height: 480px; border-radius: 50%; background: hsl(187 86% 53% / 0.12); filter: blur(110px); animation: drift3 30s ease-in-out infinite; pointer-events: none;"></div>
+    <div style="position: relative; max-width: 900px; margin: 0 auto;">
+      <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 40px;">Experience</div>
+      <div style="position: relative;">
+        <div style="position: absolute; left: 5px; top: 10px; bottom: 10px; width: 2px; background: hsl(240 6% 85%); overflow: hidden; border-radius: 2px;">
+          <div style="position: absolute; inset: 0; background-image: linear-gradient(180deg, transparent, hsl(239 84% 67%), hsl(187 86% 53%), transparent); background-size: 100% 45%; background-repeat: no-repeat; animation: railScan 5s linear infinite;"></div>
+        </div>
+        <sc-for list="{{ experience }}" as="job" hint-placeholder-count="4">
+          <div style="position: relative; display: grid; grid-template-columns: 190px 1fr; gap: 28px; align-items: center; margin-bottom: 12px; margin-left: 28px; padding: 18px 8px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);" style-hover="transform: translateX(8px);">
+            <div style="position: absolute; left: -28px; top: 50%; margin-top: -6px; width: 12px; height: 12px; border-radius: 50%; background: hsl(220 6% 93%); border: 3px solid hsl(239 84% 67%); animation: dotPulse 3.2s ease-out infinite;"></div>
+            <div style="position: absolute; left: -17px; top: 50%; width: 17px; height: 1px; background: linear-gradient(90deg, hsl(239 84% 67% / 0.5), hsl(240 6% 85%));"></div>
+            <div style="justify-self: start; font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: hsl(240 5% 40%); padding: 6px 12px; border-radius: 9999px; background: hsl(239 84% 67% / 0.07); border: 1px solid hsl(239 84% 67% / 0.18); white-space: nowrap;">{{ job.dates }}</div>
+            <div>
+              <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.01em;">{{ job.role }}</div>
+              <div style="font-size: 14px; color: hsl(239 84% 67%);">{{ job.org }}</div>
+            </div>
+          </div>
+        </sc-for>
       </div>
     </div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact" style="padding: 120px 64px; max-width: 800px; margin: 0 auto; text-align: center;">
-    <div style="font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(0.5 0.13 55); margin-bottom: 16px;">Contact</div>
-    <h2 style="font-family: 'Manrope', sans-serif; font-size: 44px; font-weight: 800; margin: 0 0 20px; letter-spacing: -0.01em;">Let's work together</h2>
-    <p style="font-size: 18px; line-height: 1.6; color: oklch(0.35 0.006 260); margin: 0 0 40px;">Open to Business Analyst, Operations Analyst, and AI &amp; Automation roles. Based in the San Francisco Bay Area — happy to chat remote or on-site.</p>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 28px; font-size: 15px; color: oklch(0.45 0.006 260); flex-wrap: wrap; margin-bottom: 8px;">
-      <span>San Francisco Bay Area</span>
+    <div style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(239 84% 67%); margin-bottom: 16px;">Contact</div>
+    <h2 style="font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 44px; font-weight: 800; margin: 0 0 20px; letter-spacing: -0.01em;">Let's work <span style="background-image: linear-gradient(to right, hsl(187 86% 53%), hsl(270 91% 65%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">together</span></h2>
+    <p style="font-size: 18px; line-height: 1.6; color: hsl(240 5% 28%); margin: 0 0 40px;">Always happy to chat about data, operations, and AI.</p>
+    <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+      <a href="https://www.linkedin.com/in/kayleewan/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; white-space: nowrap; border: 1px solid hsl(240 6% 78%); color: hsl(240 10% 4%); font-weight: 600; font-size: 16px; border-radius: 6px; transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.18s ease, background 0.18s ease, color 0.18s ease;" style-hover="transform: translateY(-3px); border-color: hsl(239 84% 67%); background: hsl(239 84% 67% / 0.08); color: hsl(239 84% 55%);" style-active="transform: translateY(0) scale(0.97);"><svg width="19" height="19" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"></path></svg>LinkedIn</a>
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 14px; font-size: 15px; color: hsl(240 5% 38%); flex-wrap: wrap;">
+      <span style="display: inline-flex; align-items: center; gap: 7px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>San Francisco Bay Area</span>
       <span style="color: oklch(0.7 0.006 260);">·</span>
-      <a href="mailto:liwan@berkeley.edu">liwan@berkeley.edu</a>
-      <span style="color: oklch(0.7 0.006 260);">·</span>
-      <a href="https://linkedin.com/in/kayleewan" target="_blank">linkedin.com/in/kayleewan</a>
+      <a href="mailto:liwan@berkeley.edu?subject=Hello%20Kaylee" style="display: inline-flex; align-items: center; gap: 7px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg>liwan@berkeley.edu</a>
     </div>
   </section>
 
-  <footer style="padding: 32px 64px; text-align: center; font-size: 13px; color: oklch(0.55 0.006 260); border-top: 1px solid oklch(0 0 0 / 0.08);">© 2026 Kaylee Wan</footer>
+  <footer style="padding: 32px 64px; text-align: center; font-size: 13px; color: hsl(240 5% 45%); border-top: 1px solid hsl(240 6% 85%);">© 2026 Kaylee Wan · Built with Claude Design</footer>
+
 </div>
-<script>
-  let zoom = 1.4;
-  const label = document.getElementById('zoomLabel');
-  const box = document.getElementById('resumeBox');
-  function apply() {
-    label.textContent = Math.round(zoom * 100) + '%';
-    box.style.width = (600 * zoom) + 'px';
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { zoom: 1.4, resumeUrl: localStorage.getItem('kw-resume-pdf') || './assets/resume.pdf', typed: 'Business Analyst' };
+  roles = ['Business Analyst', 'Data Storyteller', 'AI Automation Builder', 'Operations Analyst'];
+  componentDidMount() {
+    let r = 0, i = this.roles[0].length, del = false;
+    const tick = () => {
+      const word = this.roles[r];
+      if (!del) {
+        i++;
+        if (i >= word.length) { i = word.length; del = true; this.timer = setTimeout(tick, 1800); this.setState({ typed: word }); return; }
+      } else {
+        i--;
+        if (i <= 0) { i = 0; del = false; r = (r + 1) % this.roles.length; }
+      }
+      this.setState({ typed: this.roles[r].slice(0, i) });
+      this.timer = setTimeout(tick, del ? 40 : 85);
+    };
+    this.timer = setTimeout(tick, 2000);
+    this.startSnakes();
+    this.startCursor();
   }
-  document.getElementById('zoomInBtn').onclick = () => { zoom = Math.min(2, +(zoom + 0.1).toFixed(2)); apply(); };
-  document.getElementById('zoomOutBtn').onclick = () => { zoom = Math.max(0.5, +(zoom - 0.1).toFixed(2)); apply(); };
-  apply();
+  emailMe = (e) => {
+    const addr = 'liwan@berkeley.edu';
+    try { navigator.clipboard && navigator.clipboard.writeText(addr); } catch (err) {}
+    this.setState({ copied: true });
+    clearTimeout(this.copyTimer);
+    this.copyTimer = setTimeout(() => this.setState({ copied: false }), 2200);
+    try { window.open('mailto:' + addr + '?subject=Hello%20Kaylee', '_blank'); } catch (err) {}
+  };
+  dotRef = React.createRef();
+  ringRef = React.createRef();
+  startCursor() {
+    if (this.cursorOn) return;
+    if (!window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const dot = this.dotRef.current, ring = this.ringRef.current;
+    if (!dot || !ring) return;
+    this.cursorOn = true;
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    let rx = mx, ry = my, scale = 1, targetScale = 1, visible = false;
+    const INTERACTIVE = 'a, button, [role="button"], image-slot, input, summary';
+    const onMove = (e) => {
+      mx = e.clientX; my = e.clientY;
+      if (!visible) { visible = true; dot.style.opacity = '1'; ring.style.opacity = '1'; }
+      const el = e.target && e.target.closest ? e.target.closest(INTERACTIVE) : null;
+      targetScale = el ? 2.2 : 1;
+    };
+    const onLeave = () => { visible = false; dot.style.opacity = '0'; ring.style.opacity = '0'; };
+    const onDown = () => { this.pressed = true; };
+    const onUp = () => { this.pressed = false; };
+    window.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseleave', onLeave);
+    window.addEventListener('mousedown', onDown);
+    window.addEventListener('mouseup', onUp);
+    this.cursorCleanup = () => {
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mouseup', onUp);
+      cancelAnimationFrame(this.raf);
+    };
+    const loop = () => {
+      rx += (mx - rx) * 0.16;
+      ry += (my - ry) * 0.16;
+      const want = targetScale * (this.pressed ? 0.8 : 1);
+      scale += (want - scale) * 0.18;
+      const ds = 1 + (scale - 1) * 0.14;
+      dot.style.transform = 'translate3d(' + (mx - 1) + 'px,' + (my - 1) + 'px,0) scale(' + ds + ')';
+      dot.style.transformOrigin = '2px 2px';
+      ring.style.transform = 'translate3d(' + (rx - 18) + 'px,' + (ry - 18) + 'px,0) scale(' + scale + ')';
+      this.raf = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+  canvasRef = React.createRef();
+  componentDidUpdate() { this.startSnakes(); this.startCursor(); }
+  startSnakes() {
+    const canvas = this.canvasRef.current;
+    if (!canvas || this.snakeTimer) return;
+    const parent = canvas.parentElement;
+    const GRID = 24, COUNT = 3, LEN = 8, TICK = 180;
+    const DIRS = [[1,0],[-1,0],[0,1],[0,-1]];
+    const resize = () => { canvas.width = parent.clientWidth; canvas.height = parent.clientHeight; };
+    resize();
+    this.onResize = resize;
+    window.addEventListener('resize', resize);
+    const cols = () => Math.floor(canvas.width / GRID) || 1;
+    const rows = () => Math.floor(canvas.height / GRID) || 1;
+    const snakes = Array.from({ length: COUNT }, () => ({
+      trail: [[Math.floor(Math.random()*cols()), Math.floor(Math.random()*rows())]],
+      dir: DIRS[Math.floor(Math.random()*4)]
+    }));
+    this.snakeTimer = setInterval(() => {
+      const c = cols(), r = rows();
+      for (const s of snakes) {
+        if (Math.random() < 0.3) s.dir = DIRS[Math.floor(Math.random()*4)];
+        const [hx, hy] = s.trail[s.trail.length-1];
+        let nx = hx + s.dir[0], ny = hy + s.dir[1];
+        if (nx < 0) nx = c-1; if (nx >= c) nx = 0;
+        if (ny < 0) ny = r-1; if (ny >= r) ny = 0;
+        s.trail.push([nx, ny]);
+        if (s.trail.length > LEN) s.trail.shift();
+      }
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of snakes) {
+        for (let i = 0; i < s.trail.length; i++) {
+          const [gx, gy] = s.trail[i];
+          ctx.beginPath();
+          ctx.arc(gx*GRID + GRID/2, gy*GRID + GRID/2, 1.5, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(0, 217, 255, ' + (((i+1)/s.trail.length)*0.5) + ')';
+          ctx.fill();
+        }
+      }
+    }, TICK);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+    clearInterval(this.snakeTimer);
+    if (this.onResize) window.removeEventListener('resize', this.onResize);
+    if (this.cursorCleanup) this.cursorCleanup();
+  }
+  downloadResume = async () => {
+    try {
+      const res = await fetch('./assets/resume.pdf');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Kaylee-Wan-Resume.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      window.open('./assets/resume.pdf', '_blank');
+    }
+  };
+  onUploadPdf = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { localStorage.setItem('kw-resume-pdf', reader.result); } catch (err) {}
+      this.setState({ resumeUrl: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+  cinematicNav = (page) => (e) => {
+    if (!page || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault();
+    const card = e.currentTarget.parentElement;
+    const r = card.getBoundingClientRect();
+    const veil = document.createElement('div');
+    veil.style.cssText = 'position:fixed;z-index:9999;background:hsl(220 6% 96%);pointer-events:none;box-shadow:0 30px 80px hsl(239 84% 67% / 0.25);border-radius:14px;left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;opacity:0;transition:left .52s cubic-bezier(.65,0,.35,1),top .52s cubic-bezier(.65,0,.35,1),width .52s cubic-bezier(.65,0,.35,1),height .52s cubic-bezier(.65,0,.35,1),border-radius .52s ease,opacity .18s ease;';
+    document.body.appendChild(veil);
+    requestAnimationFrame(() => {
+      veil.style.opacity = '1';
+      veil.style.left = '0px';
+      veil.style.top = '0px';
+      veil.style.width = '100vw';
+      veil.style.height = '100vh';
+      veil.style.borderRadius = '0px';
+    });
+    setTimeout(() => { window.location.href = page; }, 480);
+  };
+  renderVals() {
+    const zoom = this.state.zoom;
+    const vals = {
+      typed: this.state.typed,
+
+      cursor: React.createElement(React.Fragment, null,
+        React.createElement('div', { ref: this.dotRef, style: {
+          position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 100000, opacity: 0,
+          transition: 'opacity 0.25s ease'
+        } },
+          React.createElement('svg', { width: 26, height: 32, viewBox: '0 0 26 32', style: { display: 'block' } },
+            React.createElement('defs', null,
+              React.createElement('linearGradient', { id: 'kw-cur', x1: '0', y1: '0', x2: '1', y2: '1' },
+                React.createElement('stop', { offset: '0%', stopColor: 'hsl(187 86% 53%)' }),
+                React.createElement('stop', { offset: '100%', stopColor: 'hsl(270 91% 65%)' })
+              )
+            ),
+            React.createElement('path', {
+              d: 'M2 1.5 L2 25 L8.4 19.2 L12.6 30 L17.4 28 L13.2 17.6 L22 17 Z',
+              fill: 'url(#kw-cur)', stroke: 'hsl(0 0% 100%)', strokeWidth: 1.6,
+              strokeLinejoin: 'round', strokeLinecap: 'round'
+            })
+          )
+        ),
+        React.createElement('div', { ref: this.ringRef, style: { position: 'fixed', top: 0, left: 0, width: 0, height: 0, pointerEvents: 'none' } })
+      ),
+      emailMe: this.emailMe,
+      emailLabel: this.state.copied ? '✓ Copied liwan@berkeley.edu' : '✉ Email me',
+      gridSnakes: React.createElement('canvas', { ref: this.canvasRef, style: { position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 } }),
+      healParticles: [
+        { char: '+', left: '10%', delay: '0s', dur: '2.8s', size: '24px' },
+        { char: '·', left: '30%', delay: '0.6s', dur: '2.2s', size: '20px' },
+        { char: '✦', left: '55%', delay: '1.2s', dur: '3s', size: '18px' },
+        { char: '0', left: '75%', delay: '0.3s', dur: '2.5s', size: '22px' },
+        { char: '+', left: '90%', delay: '1.8s', dur: '2.6s', size: '20px' },
+        { char: '1', left: '20%', delay: '2.1s', dur: '2.4s', size: '22px' },
+        { char: '·', left: '65%', delay: '0.9s', dur: '3.2s', size: '18px' },
+        { char: '✦', left: '45%', delay: '1.5s', dur: '2.7s', size: '20px' },
+      ].map((p, i) => React.createElement('span', {
+        key: i, 'aria-hidden': 'true',
+        style: { position: 'absolute', pointerEvents: 'none', userSelect: 'none', left: p.left, bottom: '50%', fontSize: p.size, color: '#4ade80', opacity: 0, animation: 'heal-float ' + p.dur + ' ease-out ' + p.delay + ' infinite' }
+      }, p.char)),
+      resumeUrl: this.state.resumeUrl,
+      downloadResume: this.downloadResume,
+      onUploadPdf: this.onUploadPdf,
+      technicalSkills: ['Python', 'SQL', 'Microsoft Excel Expert (MO-211 Certified)', 'Google Sheets', 'Tableau', 'Power BI', 'SPSS', 'Claude Code', 'Codex', 'Gemini', 'n8n'],
+      softSkills: ['Cross-Cultural Communication', 'Data Storytelling', 'Community Mobilization', 'Attention to Detail', 'Self-Directed Learning', 'Stakeholder Communication', 'Adaptability', 'Leadership'],
+      technicalSkills: ['Python', 'SQL', 'Excel (MO-211 Certified)', 'Google Sheets', 'Tableau', 'Power BI', 'SPSS', 'Claude Code', 'Codex', 'Gemini', 'n8n'],
+      softSkills: ['Cross-Cultural Communication', 'Data Storytelling', 'Community Mobilization', 'Attention to Detail', 'Self-Directed Learning', 'Stakeholder Communication', 'Adaptability', 'Leadership'],
+      zoomPercent: Math.round(zoom * 100) + '%',
+      zoomWidth: (600 * zoom) + 'px',
+      zoomIn: () => this.setState(s => ({ zoom: Math.min(2, +(s.zoom + 0.1).toFixed(2)) })),
+      zoomOut: () => this.setState(s => ({ zoom: Math.max(0.5, +(s.zoom - 0.1).toFixed(2)) })),
+      skillGroups: [
+        { title: 'Languages & Tools', items: ['Python', 'SQL', 'Microsoft Excel Expert (MO-211 Certified)', 'Google Sheets', 'Tableau', 'Power BI', 'SPSS'] },
+        { title: 'AI & Automation', items: ['Claude Code', 'Codex', 'Gemini', 'n8n', 'Prompt Engineering', 'Multi-Agent Systems', 'Workflow Automation'] },
+        { title: 'Methods', items: ['ETL', 'Statistical Analysis', 'Root Cause Analysis', 'A/B Testing', 'Data Visualization', 'Stakeholder Communication'] }
+      ],
+      projects: [
+        {
+          category: 'People Analytics',
+          group: 'Data & AI',
+          slotId: 'proj-ops',
+          placeholder: 'Operations analytics project image',
+          title: 'People Analytics & Attrition Root-Cause',
+          org: 'Amazon Fulfillment Center (via Extern)',
+          page: 'project-amazon.html',
+          tags: ['Sentiment Analysis', 'People Operations', 'HR Strategy', 'Python Scraping', 'Workforce Data Analysis', 'Python', 'Excel', 'Claude AI', 'Root Cause Analysis', 'ETL']
+        },
+        {
+          category: 'Workflow Automation',
+          group: 'Data & AI',
+          slotId: 'proj-ai',
+          placeholder: 'AI automation project image',
+          logo: './assets/wayfair-logo.png',
+          page: 'project-wayfair.html',
+          title: 'AI Agents for Market Intelligence',
+          org: 'Wayfair (via Extern)',
+          tags: ['n8n', 'OpenAI', 'Claude', 'Gemini', 'AI Agent Development', 'Dashboard Design', 'Trend Analysis', 'Prompt Engineering', 'Competitor Product Benchmarking']
+        },
+        {
+          category: 'Apparel Design',
+          group: 'Illustration & Design',
+          slotId: 'proj-art-1',
+          placeholder: 'Drop T-shirt design image here',
+          image: './assets/tshirt-cream.png',
+          title: 'Orientation Leaders’ T-Shirt Design',
+          org: 'UC Berkeley, Berkeley International Office',
+          page: 'project-bio-tshirt.html',
+          tags: ['Canva', 'Photoshop', 'ChatGPT', 'Apparel Design']
+        },
+        {
+          category: 'Graphic Design',
+          group: 'Illustration & Design',
+          slotId: 'proj-art-2',
+          placeholder: 'Drop poster image here',
+          image: './assets/crn-poster.png',
+          title: 'Pride Month Event Poster',
+          org: 'Chinese Rainbow Network (CRN)',
+          page: 'project-crn-poster.html',
+          tags: ['Poster Design', 'Event Branding', 'Bilingual Layout']
+        },
+        {
+          category: 'Illustration',
+          group: 'Illustration & Design',
+          slotId: 'proj-art-3',
+          placeholder: 'Drop design image here',
+          image: './assets/procreate-house-color.png',
+          title: 'Houses, Drawn from Photographs',
+          org: 'Personal Work',
+          page: 'project-illustrations.html',
+          tags: ['Procreate', 'iPad', 'Architectural Illustration', 'Linework']
+        }
+      ],
+      experience: [
+        { dates: 'Oct 2025 – Present', role: 'Research Data Analyst', org: 'UCSF, Neuroscape Research Lab', bullets: [] },
+        { dates: 'Jul 2026 – Aug 2026', role: 'AI Agent & Automation Extern', org: 'Wayfair (via Extern)', bullets: [] },
+        { dates: 'May 2026 – Jul 2026', role: 'Operational Strategy & People Analytics Extern', org: 'Amazon Fulfillment Center (via Extern)', bullets: [] },
+        { dates: 'Sep 2025 – Dec 2025', role: 'Data Analyst Intern', org: 'Appa Health', bullets: [] },
+        { dates: 'Aug 2024 – Jul 2026', role: 'Lead Orientation Leader', org: 'UC Berkeley, Berkeley International Office', bullets: [] },
+        { dates: 'Oct 2021 – May 2023', role: 'Scheduling & Front Desk Operations Staff', org: 'Berkeley City College Learning Resource Center', bullets: [] }
+      ]
+    };
+    vals.projects = (vals.projects || []).map(p => Object.assign({}, p, {
+      hasImage: !!p.image,
+      noImage: !p.image,
+      onNav: this.cinematicNav(p.page),
+      logoEl: p.logo ? React.createElement('img', {
+        src: p.logo, alt: '',
+        style: { position: 'absolute', left: 16, bottom: -2, height: 64, width: 'auto', pointerEvents: 'none' }
+      }) : null
+    }));
+    const groups = [];
+    vals.projects.forEach(p => { if (p.group && groups.indexOf(p.group) < 0) groups.push(p.group); });
+    const active = this.state.filter || (groups.indexOf('Data & AI') >= 0 ? 'Data & AI' : 'All');
+    vals.filters = ['All'].concat(groups).map(g => ({
+      label: g,
+      onClick: () => this.setState({ filter: g }),
+      style: g === active
+        ? { display: 'inline-flex', alignItems: 'center', padding: '9px 20px', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap', borderRadius: 9999, border: '1px solid transparent', background: 'hsl(239 84% 67%)', color: 'hsl(0 0% 100%)', cursor: 'pointer', transition: 'all 0.2s ease' }
+        : { display: 'inline-flex', alignItems: 'center', padding: '9px 20px', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap', borderRadius: 9999, border: '1px solid hsl(240 6% 82%)', background: 'hsl(0 0% 100% / 0.6)', color: 'hsl(240 5% 32%)', cursor: 'pointer', transition: 'all 0.2s ease' }
+    }));
+    vals.showFilters = vals.filters.length > 1;
+    if (active !== 'All') vals.projects = vals.projects.filter(p => p.group === active);
+    return vals;
+  }
+}
 </script>
 </body>
 </html>
