@@ -94,7 +94,7 @@
     <div style="position: relative; width: 300px; height: 300px; justify-self: center; animation: fadeUp 0.6s ease both;">
       <div style="position: absolute; inset: -18px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53% / 0.35), hsl(270 91% 65% / 0.3)); filter: blur(2px);"></div>
       <div style="position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53%), hsl(270 91% 65%));"></div>
-      <image-slot id="headshot" style="position: absolute; inset: 0; width: 300px; height: 300px;" shape="circle" placeholder="Drop headshot"></image-slot>
+      <image-slot id="headshot" src="./assets/headshot.webp" style="position: absolute; inset: 0; width: 300px; height: 300px;" shape="circle" placeholder="Drop headshot"></image-slot>
     </div>
     <div>
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px; animation: fadeUp 0.6s ease both;">
@@ -465,6 +465,7 @@ class Component extends DCLogic {
           group: 'Data & AI',
           slotId: 'proj-ops',
           placeholder: 'Operations analytics project image',
+          image: './assets/project-amazon.webp',
           title: 'People Analytics & Attrition Root-Cause',
           org: 'Amazon Fulfillment Center (via Extern)',
           page: 'project-amazon.html',
@@ -475,6 +476,7 @@ class Component extends DCLogic {
           group: 'Data & AI',
           slotId: 'proj-ai',
           placeholder: 'AI automation project image',
+          image: './assets/project-wayfair.png',
           logo: './assets/wayfair-logo.png',
           page: 'project-wayfair.html',
           title: 'AI Agents for Market Intelligence',
