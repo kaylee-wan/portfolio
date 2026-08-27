@@ -94,7 +94,7 @@
     <div style="position: relative; width: 300px; height: 300px; justify-self: center; animation: fadeUp 0.6s ease both;">
       <div style="position: absolute; inset: -18px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53% / 0.35), hsl(270 91% 65% / 0.3)); filter: blur(2px);"></div>
       <div style="position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53%), hsl(270 91% 65%));"></div>
-      <image-slot id="headshot" src="./assets/slots/headshot.webp" style="position: absolute; inset: 0; width: 300px; height: 300px;" shape="circle" placeholder="Drop headshot"></image-slot>
+      <img id="headshot" src="./assets/slots/headshot.webp" alt="Kaylee Wan" style="position: absolute; inset: 0; width: 300px; height: 300px; border-radius: 50%; object-fit: cover; display: block;">
     </div>
     <div>
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px; animation: fadeUp 0.6s ease both;">
@@ -171,7 +171,7 @@
       <sc-for list="{{ projects }}" as="proj" hint-placeholder-count="3">
         <div style="display: flex; flex-direction: column; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px hsl(240 6% 85% / 0.5); color: inherit; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 28px hsl(239 84% 67% / 0.14); border-color: hsl(239 84% 67% / 0.4);">
           <div style="position: relative;">
-            <image-slot id="{{ proj.slotId }}" src="{{ proj.image }}" style="width: 100%; height: 230px;" shape="rect" placeholder="{{ proj.placeholder }}"></image-slot>
+            <img src="{{ proj.image }}" alt="{{ proj.placeholder }}" style="width: 100%; height: 230px; object-fit: cover; display: block;">
             {{ proj.logoEl }}
           </div>
           <a href="{{ proj.page }}" onClick="{{ proj.onNav }}" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; color: inherit;">
