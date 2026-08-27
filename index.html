@@ -94,7 +94,7 @@
     <div style="position: relative; width: 300px; height: 300px; justify-self: center; animation: fadeUp 0.6s ease both;">
       <div style="position: absolute; inset: -18px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53% / 0.35), hsl(270 91% 65% / 0.3)); filter: blur(2px);"></div>
       <div style="position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(140deg, hsl(187 86% 53%), hsl(270 91% 65%));"></div>
-      <image-slot id="headshot" style="position: absolute; inset: 0; width: 300px; height: 300px;" shape="circle" placeholder="Drop headshot"></image-slot>
+      <image-slot id="headshot" src="./assets/slots/headshot.webp" style="position: absolute; inset: 0; width: 300px; height: 300px;" shape="circle" placeholder="Drop headshot"></image-slot>
     </div>
     <div>
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px; animation: fadeUp 0.6s ease both;">
@@ -464,6 +464,7 @@ class Component extends DCLogic {
           category: 'People Analytics',
           group: 'Data & AI',
           slotId: 'proj-ops',
+          image: './assets/slots/proj-ops.webp',
           placeholder: 'Operations analytics project image',
           title: 'People Analytics & Attrition Root-Cause',
           org: 'Amazon Fulfillment Center (via Extern)',
@@ -474,6 +475,7 @@ class Component extends DCLogic {
           category: 'Workflow Automation',
           group: 'Data & AI',
           slotId: 'proj-ai',
+          image: './assets/slots/proj-ai.png',
           placeholder: 'AI automation project image',
           logo: './assets/wayfair-logo.png',
           page: 'project-wayfair.html',
@@ -521,7 +523,7 @@ class Component extends DCLogic {
         { dates: 'May 2026 – Jul 2026', role: 'Operational Strategy & People Analytics Extern', org: 'Amazon Fulfillment Center (via Extern)', bullets: [] },
         { dates: 'Sep 2025 – Dec 2025', role: 'Data Analyst Intern', org: 'Appa Health', bullets: [] },
         { dates: 'Aug 2024 – Jul 2026', role: 'Lead Orientation Leader', org: 'UC Berkeley, Berkeley International Office', bullets: [] },
-        { dates: 'Oct 2021 – May 2023', role: 'Scheduling & Front Desk Operations Staff', org: 'Berkeley City College Learning Resource Center', bullets: [] }
+        { dates: 'Oct 2021 – May 2023', role: 'Scheduling & Operations Staff', org: 'Berkeley City College Learning Resource Center', bullets: [] }
       ]
     };
     vals.projects = (vals.projects || []).map(p => Object.assign({}, p, {
