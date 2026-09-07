@@ -37,6 +37,11 @@
     }
     [data-desktop-note] { display: none; }
     @media (max-width: 760px) { [data-desktop-note] { display: block !important; } }
+  @media (max-width: 640px) {
+      section, nav, header, footer { padding-left: 22px !important; padding-right: 22px !important; }
+      [style*="grid-column: span 2"] { grid-column: auto !important; }
+      [style*="minmax(0px, 1fr) 280px"], [style*="300px minmax(0px, 1fr)"] { grid-template-columns: 1fr !important; }
+    }
   </style>
   <script>
     document.addEventListener('click', function (e) {

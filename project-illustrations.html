@@ -37,6 +37,11 @@
       [style*="padding: 32px 64px"] { padding-left: 22px !important; padding-right: 22px !important; }
       h1 { font-size: clamp(28px, 8.5vw, 42px) !important; }
     }
+  @media (max-width: 640px) {
+      section, nav, header, footer { padding-left: 22px !important; padding-right: 22px !important; }
+      [style*="grid-column: span 2"] { grid-column: auto !important; }
+      [style*="minmax(0px, 1fr) 280px"], [style*="300px minmax(0px, 1fr)"] { grid-template-columns: 1fr !important; }
+    }
   </style>
   <script>
     document.addEventListener('click', function (e) {
