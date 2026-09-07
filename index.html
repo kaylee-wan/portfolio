@@ -74,6 +74,7 @@
       [style*="white-space: nowrap"] { white-space: normal !important; }
     }
   </style>
+  <script>(function(){function s(){document.querySelectorAll('img[data-src]').forEach(function(i){var v=i.getAttribute('data-src');if(v&&v.indexOf('{{')<0&&i.getAttribute('src')!==v)i.setAttribute('src',v);});}new MutationObserver(s).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['data-src','src']});document.addEventListener('DOMContentLoaded',s);s();})();</script>
 </helmet>
 
 <div style="background: hsl(220 6% 96%); color: hsl(240 10% 4%); min-height: 100vh;">
@@ -181,7 +182,7 @@
       <sc-for list="{{ projects }}" as="proj" hint-placeholder-count="3">
         <div style="display: flex; flex-direction: column; background: hsl(0 0% 100%); border: 1px solid hsl(240 6% 85%); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px hsl(240 6% 85% / 0.5); color: inherit; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 12px 28px hsl(239 84% 67% / 0.14); border-color: hsl(239 84% 67% / 0.4);">
           <div style="position: relative;">
-            <img src="{{ proj.image }}" alt="{{ proj.placeholder }}" style="width: 100%; height: 230px; object-fit: cover; display: block;">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ proj.image }}" alt="{{ proj.placeholder }}" style="width: 100%; height: 230px; object-fit: cover; display: block;">
             {{ proj.logoEl }}
           </div>
           <a href="{{ proj.page }}" onClick="{{ proj.onNav }}" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; color: inherit;">
@@ -515,7 +516,9 @@ class Component extends DCLogic {
     }));
     const groups = [];
     vals.projects.forEach(p => { if (p.group && groups.indexOf(p.group) < 0) groups.push(p.group); });
-    const active = this.state.filter || 'All';
+    const isNarrow = typeof window !== 'undefined' && window.innerWidth <= 760;
+    const defaultFilter = isNarrow ? 'All' : (groups.indexOf('Data & AI') >= 0 ? 'Data & AI' : 'All');
+    const active = this.state.filter || defaultFilter;
     vals.filters = ['All'].concat(groups).map(g => ({
       label: g,
       onClick: () => this.setState({ filter: g }),

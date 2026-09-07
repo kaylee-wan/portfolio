@@ -438,7 +438,7 @@
 
   class ImageSlot extends HTMLElement {
     static get observedAttributes() {
-      return ['shape', 'radius', 'mask', 'fit', 'placeholder', 'src', 'id', 'credit', 'credit-href'];
+      return ['shape', 'radius', 'mask', 'fit', 'placeholder', 'src', 'data-src', 'id', 'credit', 'credit-href'];
     }
 
     /** Duplicate-slide hook (called by deck-stage, see its
@@ -845,7 +845,7 @@
     // in the same task, and clearing _swapGen on those would let the
     // same-src branch unmask the old image mid-encode.
     attributeChangedCallback(name, oldVal, newVal) {
-      if (name === 'src' && oldVal !== newVal) {
+      if ((name === 'src' || name === 'data-src') && oldVal !== newVal) {
         this._gen++;
         this._swapGen = 0;
       }
@@ -1095,7 +1095,8 @@
       // (Claude wrote it into the HTML) so it passes through unchanged.
       let stored = this.id ? getSlot(this.id) : this._local;
       if (stored && stored.u && !/^data:image\//i.test(stored.u)) stored = null;
-      const srcAttr = this.getAttribute('src') || '';
+      let srcAttr = this.getAttribute('src') || this.getAttribute('data-src') || '';
+      if (srcAttr.indexOf('{{') >= 0) srcAttr = '';
       this._userUrl = (stored && stored.u) || null;
       const url = this._userUrl || srcAttr;
       // Don't clobber an in-flight reframe with a store-triggered re-render.
