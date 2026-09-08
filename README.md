@@ -13,7 +13,7 @@ Static build. No dependencies, no build step — upload this folder's contents a
 | File | Page |
 |---|---|
 | `index.html` | Main portfolio |
-| `project-amazon.html` | People Analytics & Attrition Root-Cause — Amazon |
+| `project-amazon.html` | It Was Never the Pay — People Analytics & Attrition Root-Cause (Amazon) |
 | `project-wayfair.html` | AI Agents for Market Intelligence — Wayfair |
 | `project-bio-tshirt.html` | Orientation Leaders' T-Shirt Design |
 | `project-crn-poster.html` | Pride Month Event Poster |
